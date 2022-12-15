@@ -1,6 +1,5 @@
 # RsMaui
 
-Some projects using Maui
+### MyFirstWinMauiApp
+The example template from Visual Studio
 
-### NomenNominandum
-NomenNominandum
