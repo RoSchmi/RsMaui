@@ -1,0 +1,21 @@
+# .gitignore
+# Erstmal alles ignorieren
+*
+!.gitignore
+
+## Only include this folders
+!/MyFirstWinMauiApp/
+!/MyFirstWinMauiApp/**
+
+
+
+
+
+
+
+
+
+
+
+
+
