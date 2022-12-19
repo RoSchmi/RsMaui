@@ -28,5 +28,11 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.roschmi.mauimvvmtest</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>MinimumOSVersion</key>
+	<string>14.2</string>
 </dict>
 </plist>

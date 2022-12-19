@@ -1,9 +1,13 @@
-﻿using MauiMvvmTest;
+﻿
 
+// Uses examples from
+// https://github.com/janguar/FirstMauiApp
+
+
+using MauiMvvmTest;
+using System.Collections.ObjectModel;
 
 namespace MauiMvvmTest;
-
-
 
 public partial class MainPage : ContentPage
 {
@@ -23,6 +27,7 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         BindingContext = vm;
         theViewModel= vm;
+        
     }
 
     private void ResetButton_Clicked(object sender, EventArgs e)
