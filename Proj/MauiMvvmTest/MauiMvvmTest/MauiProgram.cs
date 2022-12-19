@@ -1,4 +1,7 @@
-﻿namespace MauiMvvmTest;
+﻿using MauiMvvmTest.Pages;
+using MauiMvvmTest.ViewModels;
+
+namespace MauiMvvmTest;
 
 public static class MauiProgram
 {
@@ -15,9 +18,12 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<MainPage>();
 		builder.Services.AddSingleton<MainPageViewModel>();
-		builder.Services.AddSingleton<Pages.Page1>();
-        builder.Services.AddSingleton<Pages.Page2>();
 
+		builder.Services.AddSingleton<Page1>();
+        builder.Services.AddSingleton<Page1ViewModel>();
+
+        builder.Services.AddSingleton<Pages.Page2>();
+        builder.Services.AddSingleton<Page2ViewModel>();
 
         return builder.Build();
 	}

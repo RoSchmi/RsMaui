@@ -2,11 +2,30 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiMvvmTest.Pages.Page1"
-             Title="Page1">
+             xmlns:viewmodel="clr-namespace:MauiMvvmTest.ViewModels"         
+             Title="Page1"      
+             x:DataType="viewmodel:Page1ViewModel">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <HorizontalStackLayout VerticalOptions="Center">
+            <Label 
+            Margin="10"	
+			FontSize="12"
+			HorizontalOptions="Center"
+			Text="This text was passed to this Detail-Page: "
+			VerticalOptions="Center" />
+
+            <Label 
+            Margin="10"
+			FontAttributes="Bold"
+			FontSize="32"
+			HorizontalOptions="Start"
+			Text="{Binding TextToShow}"
+			VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <Button
+			Margin="10,10"
+			Command="{Binding GoBackCommand}"
+			Text="Go Back" />
     </VerticalStackLayout>
 </ContentPage>

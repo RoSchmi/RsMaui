@@ -86,12 +86,17 @@
         </ScrollView >
         <ScrollView Grid.Row="2">
             <VerticalStackLayout >
-                <CollectionView  ItemsSource="{Binding Items}" SelectionMode="None">
+                    <CollectionView  ItemsSource="{Binding Items}" BackgroundColor= "Black" SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <SwipeView>
-                                <SwipeView.LeftItems>
-                                    <SwipeItems>
+                                <SwipeView  BackgroundColor="#0F0F0F">
+                                    <SwipeView.LeftItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="SayHello" 
+                                               BackgroundColor="Green"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, 
+                                               Path=SayHelloCommand}"
+                                               CommandParameter="{Binding .}"></SwipeItem>
                                         <SwipeItem Text="Delete" 
                                                BackgroundColor="Red"
                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, 

@@ -15,12 +15,12 @@
         <ShellContent
             Title="Page 1"
             ContentTemplate="{DataTemplate view:Page1}"
-            Route="Page1" />
+            Route="Page 1" />
 
         <ShellContent
 		    Title="Page 2"
 		    ContentTemplate="{DataTemplate view:Page2}"
-		    Route="Page22" />
+		    Route="Page 2" />
 
 </Shell>
 

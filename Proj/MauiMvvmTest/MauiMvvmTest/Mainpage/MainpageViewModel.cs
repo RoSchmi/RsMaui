@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using static System.Net.Mime.MediaTypeNames;
+using MauiMvvmTest.Pages;
+//using Windows.UI.Popups;
 
 namespace MauiMvvmTest
 {
@@ -52,18 +54,28 @@ namespace MauiMvvmTest
         }
 
         [RelayCommand]
+        private void SayHello(string s)
+        {
+
+            int dummy3 = 1;
+        }
+
+        [RelayCommand]
         private void Remove(string s)
         {
             if (Items.Contains(s))
                 Items.Remove(s);
         }
-        /*
+        
         [RelayCommand]
         private async void Tap(string s)
         {
-            await Shell.Current.GoToAsync($"{nameof(Page 1)}?Text={s}");
+            string targetPage = nameof(Page1);
+            string injectedParameter = s;
+           
+           await Shell.Current.GoToAsync($"{nameof(Page1)}?Parameter={s}");
         }
-        */
+        
     }
 }
 
