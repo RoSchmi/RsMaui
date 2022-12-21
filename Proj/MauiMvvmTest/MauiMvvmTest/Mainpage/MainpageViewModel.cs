@@ -57,7 +57,7 @@ namespace MauiMvvmTest
         private void SayHello(string s)
         {
 
-            int dummy3 = 1;
+            int dummy3 = 1;  // Do nothing
         }
 
         [RelayCommand]

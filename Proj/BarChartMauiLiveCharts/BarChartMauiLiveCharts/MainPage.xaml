@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BarChartMauiLiveCharts.MainPage"
+             xmlns:local="clr-namespace:BarChartMauiLiveCharts"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui">
+    <!-- xmlns:vms="clr-namespace:ViewModelSamples.Bars.RowsWithLabels;assembly=ViewModelSamples"> -->
+    <ContentPage.BindingContext>
+        <local:MainPageViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid RowDefinitions="400, 100">
+                <lvc:CartesianChart
+                Series="{Binding Series}" Grid.Row="0">
+                </lvc:CartesianChart>
+                <VerticalStackLayout Grid.Row="1">
+                    <HorizontalStackLayout  HorizontalOptions="Center">
+                        <Button Text="Week" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
+                        <Button Text="Quarter" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
+                        <Button Text="Year" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center">
+                        <Button Text="Go Back" Padding="20,20" Margin="20" Command="{Binding TimeShiftBackCommand}" HorizontalOptions="Center"/>
+                        <Entry Text="{Binding CurrentDate.Date}" MinimumWidthRequest="200"/>
+                        <Button Text="Go Fore" Padding="20,20" Margin="20" Command="{Binding TimeShiftForeCommand}" HorizontalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
