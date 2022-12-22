@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-//using CoreText;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using SkiaSharp;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿
 
 namespace BarChartMauiLiveCharts
 {
+    using System;
+    using System.Globalization;
+    //using CoreText;
+    using LiveChartsCore;
+    using LiveChartsCore.SkiaSharpView;
+    using LiveChartsCore.SkiaSharpView.Painting;
+    using SkiaSharp;
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Input;
+    using LiveChartsCore.SkiaSharpView.Painting.Effects;
+    using LiveChartsCore.Measure;
+
+
+
     public partial class MainPageViewModel : ObservableObject
     {
 
@@ -23,59 +26,55 @@ namespace BarChartMauiLiveCharts
         private float[] actYear_minus_2_Values = new float[366];
         private float[] actYear_minus_3_Values = new float[366];
 
+        private ISeries[] WeekSeries { get; set; }
 
-        static ColumnSeries<int> actWeekColumnSeries = new ColumnSeries<int>();
-        static ColumnSeries<int> actWeek_Year_Minus_1_ColumnSeries = new ColumnSeries<int>();
-        static ColumnSeries<int> actWeek_Year_Minus_2_ColumnSeries = new ColumnSeries<int>();
-        static ColumnSeries<int> actWeek_Year_Minus_3_ColumnSeries = new ColumnSeries<int>();
-
-        private ISeries[] weekSeries { get; set; } = null;
+        private static readonly IFormatProvider formatProviderInvariant = CultureInfo.InvariantCulture.DateTimeFormat;
 
 
         #region Constructor
         public MainPageViewModel()
-        {    
+        {
             Random random = new(1357);  // arbitrary seed
 
             // populate 4 arrays (each for the 365 or 366 days of a year) with 'arbitrary' example float values, representing the last 4 years 
-            actYearValues           = PopulateArray(DateTime.Today, 0, random);       
-            actYear_minus_1_Values  = PopulateArray(DateTime.Today.AddYears(-1), - 10, random);
-            actYear_minus_2_Values  = PopulateArray(DateTime.Today.AddYears(-2), 10, random);
-            actYear_minus_3_Values  = PopulateArray(DateTime.Today.AddYears(-3), -15, random);
+            actYearValues          = PopulateArray(DateTime.Today, 0, random);
+            actYear_minus_1_Values = PopulateArray(DateTime.Today.AddYears(-1), -10, random);
+            actYear_minus_2_Values = PopulateArray(DateTime.Today.AddYears(-2), 10, random);
+            actYear_minus_3_Values = PopulateArray(DateTime.Today.AddYears(-3), -10, random);
 
-            weekSeries = ActualizeWeekSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+            WeekSeries = ActualizeWeekSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
 
-            Series = weekSeries;
+            Series = WeekSeries;
         }
         #endregion
 
         #region Region ActualizeWeekSeries
-        static ISeries[] ActualizeWeekSeries(DateTime currentDate, 
+        private static ISeries[] ActualizeWeekSeries(DateTime currentDate, 
                                             ref float[] actYearValues, 
                                             ref float[] actYear_minus_1_Values,
                                             ref float[] actYear_minus_2_Values,
                                             ref float[] actYear_minus_3_Values
                                             )
         {
-            int dayOfWeek = (int)currentDate.DayOfWeek;
 
-            int dayOfYear = (int)currentDate.DayOfYear;
+            int firstDayOfWeek = currentDate.DayOfYear - ((int)currentDate.DayOfWeek - 1);
 
-            int firstDayOfWeek = (int)currentDate.DayOfYear - ((int)currentDate.DayOfWeek - 1);
+            int firstDayOfThisWeek = DateTime.Today.DayOfYear - ((int)DateTime.Today.DayOfWeek - 1);
 
-            ColumnSeries<int> actWeekColumnSeries = new ColumnSeries<int>();
-            ColumnSeries<int> actWeek_Year_Minus_1_ColumnSeries = new ColumnSeries<int>();
-            ColumnSeries<int> actWeek_Year_Minus_2_ColumnSeries = new ColumnSeries<int>();
-            ColumnSeries<int> actWeek_Year_Minus_3_ColumnSeries = new ColumnSeries<int>();
+            int todaysDayOfYear = DateTime.Today.DayOfYear;
 
+            var actWeekColumnSeries = new ColumnSeries<int>();
+            var actWeek_Year_Minus_1_ColumnSeries = new ColumnSeries<int>();
+            var actWeek_Year_Minus_2_ColumnSeries = new ColumnSeries<int>();
+            var actWeek_Year_Minus_3_ColumnSeries = new ColumnSeries<int>();
 
             actWeekColumnSeries.Values = new[] { (int)actYearValues[firstDayOfWeek] ,
-                                                dayOfYear >= firstDayOfWeek + 1 ? (int)actYearValues[firstDayOfWeek + 1] : 0,
-                                                dayOfYear >= firstDayOfWeek + 2 ? (int)actYearValues[firstDayOfWeek + 2] : 0,
-                                                dayOfYear >= firstDayOfWeek + 3 ? (int)actYearValues[firstDayOfWeek + 3] : 0,
-                                                dayOfYear >= firstDayOfWeek + 4 ? (int)actYearValues[firstDayOfWeek + 4] : 0,
-                                                dayOfYear >= firstDayOfWeek + 5 ? (int)actYearValues[firstDayOfWeek + 5] : 0,
-                                                dayOfYear >= firstDayOfWeek + 6 ? (int)actYearValues[firstDayOfWeek + 6] : 0
+                                                firstDayOfWeek + 1 <= todaysDayOfYear ? (int)actYearValues[firstDayOfWeek + 1] : 0,
+                                                firstDayOfWeek + 2 <= todaysDayOfYear ? (int)actYearValues[firstDayOfWeek + 2] : 0,
+                                                firstDayOfWeek + 3 <= todaysDayOfYear ? (int)actYearValues[firstDayOfWeek + 3] : 0,
+                                                firstDayOfWeek + 4 <= todaysDayOfYear ? (int)actYearValues[firstDayOfWeek + 4] : 0,
+                                                firstDayOfWeek + 5 <= todaysDayOfYear ? (int)actYearValues[firstDayOfWeek + 5] : 0,
+                                                firstDayOfWeek + 6 <= todaysDayOfYear ? (int)actYearValues[firstDayOfWeek + 6] : 0
                                                 };
 
             actWeek_Year_Minus_1_ColumnSeries.Values = new[] { (int)actYear_minus_1_Values[firstDayOfWeek],
@@ -105,7 +104,7 @@ namespace BarChartMauiLiveCharts
                                                 (int)actYear_minus_3_Values[firstDayOfWeek + 6]
                                                 };
 
-            ISeries[] localWeekSeries = new ISeries[]
+            var localWeekSeries = new ISeries[]
             {
                 new ColumnSeries<int>
                 {
@@ -140,110 +139,133 @@ namespace BarChartMauiLiveCharts
                     Padding = 2,
                     Fill = new SolidColorPaint(SKColors.Red),
                 }
-            };      
+            };
             return localWeekSeries;
         }
         #endregion
 
         [ObservableProperty]
-        private DateTime currentDate = DateTime.Today;
+        private static DateTime currentDate = DateTime.Today;
 
-
+        [ObservableProperty]
+        private string displayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy")} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy")}");
+     
         [RelayCommand]
-        private void SwitchToWeekDisplay()
+        private static void SwitchToWeekDisplay()
         {
             int dummy78 = 1;
+            //CurrentDate = CurrentDate.DayOfYear > 8 ? CurrentDate.AddDays(-7) : CurrentDate;
+            //Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
         }
 
         [RelayCommand]
         private void TimeShiftBack()
         {
             CurrentDate = CurrentDate.DayOfYear > 8 ? CurrentDate.AddDays(-7) : CurrentDate;
+            DisplayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
             Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
         }
 
         [RelayCommand]
         private void TimeShiftFore()
         {
-            CurrentDate = CurrentDate.DayOfYear + 7 < DateTime.Today.DayOfYear  ? CurrentDate.AddDays(7) : CurrentDate;
+            int firstDayOfWeek = CurrentDate.DayOfYear - ((int)CurrentDate.DayOfWeek - 1);
+
+            int firstDayOfThisWeek = DateTime.Today.DayOfYear - ((int)DateTime.Today.DayOfWeek - 1);
+
+            CurrentDate = firstDayOfWeek < firstDayOfThisWeek ? CurrentDate.AddDays(7) : CurrentDate;
+            DisplayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
+
             Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
         }
 
-
         #region Region Populate array
-        static float[] PopulateArray(DateTime date, int displacement, Random random)
-        { 
+        private static float[] PopulateArray(DateTime date, int displacement, Random random)
+        {
             int daysInYear = DateTime.IsLeapYear(date.Year) ? 366 : 365;
-            DateTime firstDayofYear = new DateTime(date.Year, 1, 1);
+            var firstDayOfYear = new DateTime(date.Year, 1, 1);
             float[] currentYearValues = new float[366];
 
             for (int i = 0; i < daysInYear; i++)
             {
-                int actMonth = firstDayofYear.AddDays(i).Month;
+                int actMonth = firstDayOfYear.AddDays(i).Month;
                 switch (actMonth)
                 {
                     case 1:
                         {
-                            currentYearValues[i] = 50 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 50 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 2:
                         {
-                            currentYearValues[i] = 60 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 60 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 3:
                         {
-                            currentYearValues[i] = 40 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 40 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 4:
                         {
-                            currentYearValues[i] = 30 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 30 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 5:
                         {
-                            currentYearValues[i] = 20 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 20 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 6:
                         {
-                            currentYearValues[i] = 20 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 20 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 7:
                         {
-                            currentYearValues[i] = 20 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 20 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 8:
                         {
-                            currentYearValues[i] = 20 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 20 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 9:
                         {
-                            currentYearValues[i] = 30 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 30 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 10:
                         {
-                            currentYearValues[i] = 40 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 40 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 11:
                         {
-                            currentYearValues[i] = 50 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 50 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
                     case 12:
                         {
-                            currentYearValues[i] = 50 + displacement + 20 * random.Next(100) / 100.0f;
+                            currentYearValues[i] = 50 + displacement + (random.Next(100) / 5.0f);
                         }
+
                         break;
-                }     
-            }   
+                }
+            }
+
             return currentYearValues;
         }
         #endregion
@@ -257,5 +279,53 @@ namespace BarChartMauiLiveCharts
         };
 
         public ISeries[] Series { get => series; set { _ = SetProperty(ref series, value); }}
+
+        private Axis[] xAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Days Week",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+
+                    LabelsPaint = new SolidColorPaint(SKColors.CornflowerBlue),
+                    TextSize = 20,
+                    UnitWidth = 1,
+                    MinStep = 1,
+                    //Labeler = value => convertDoubleToDayOfWeek(value, currentDate),
+                 
+                    
+                  //Labeler = value =>  _ =  "  " + currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).DayOfWeek.ToString().Substring(0,3) + "\r\n" + currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).ToString("dd.MMM"),
+
+                  Labeler = value =>  _ =  string.Concat("  ", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).DayOfWeek.ToString().AsSpan(0,3), "\r\n", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).ToString("dd.MMM", formatProviderInvariant )),
+
+
+                 // Labeler = value =>  _ = FormattableString.Invariant($"{currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).DayOfWeek.ToString().AsSpan(0,3)} {currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).ToString("dd.MMM")}"),
+
+    }
+            };
+
+        public Axis[] XAxes { get => xAxes; set { _ = SetProperty(ref xAxes, value); } }
+
+        private Axis[] yAxes = new Axis[]
+        {
+             new Axis
+             {
+                   // Name = "Y Axis",
+                   // NamePaint = new SolidColorPaint(SKColors.Red),
+                   // LabelsPaint = new SolidColorPaint(SKColors.Green),
+                   // TextSize = 20,
+                   // LabelsAlignment = LiveChartsCore.Drawing.Align.Start,
+                   // Labels = new string[] { "Anne"},
+
+                    /*
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray)
+                    { 
+                        StrokeThickness = 2,
+                        PathEffect = new DashEffect(new float[] { 3, 3 }) 
+                    }
+                    */
+             }
+        };
+        public Axis[] YAxes { get => yAxes; set { _ = SetProperty(ref yAxes, value); } }
     }
 }

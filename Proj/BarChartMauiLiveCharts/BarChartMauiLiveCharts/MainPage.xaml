@@ -5,14 +5,19 @@
              xmlns:local="clr-namespace:BarChartMauiLiveCharts"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui">
     <!-- xmlns:vms="clr-namespace:ViewModelSamples.Bars.RowsWithLabels;assembly=ViewModelSamples"> -->
-    <ContentPage.BindingContext>
+
+    
+        <ContentPage.BindingContext>
         <local:MainPageViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <ScrollView>
             <Grid RowDefinitions="400, 100">
                 <lvc:CartesianChart
-                Series="{Binding Series}" Grid.Row="0">
+                    Series="{Binding Series}" 
+                    XAxes="{Binding XAxes}"
+                    YAxes="{Binding YAxes}"
+                    Grid.Row="0">
                 </lvc:CartesianChart>
                 <VerticalStackLayout Grid.Row="1">
                     <HorizontalStackLayout  HorizontalOptions="Center">
@@ -21,9 +26,9 @@
                         <Button Text="Year" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center">
-                        <Button Text="Go Back" Padding="20,20" Margin="20" Command="{Binding TimeShiftBackCommand}" HorizontalOptions="Center"/>
-                        <Entry Text="{Binding CurrentDate.Date}" MinimumWidthRequest="200"/>
-                        <Button Text="Go Fore" Padding="20,20" Margin="20" Command="{Binding TimeShiftForeCommand}" HorizontalOptions="Center"/>
+                        <Button Text="Go Back" Padding="20,1" Margin="20"  Command="{Binding TimeShiftBackCommand}" HorizontalOptions="Center"/>
+                        <Entry Text="{Binding DisplayTimeSpan}" Margin="20" MaximumHeightRequest="70" IsReadOnly="True" FontAttributes="Bold" MinimumWidthRequest="200"/>
+                        <Button Text="Go Forth" Padding="20,20" Margin="20" MaximumHeightRequest="70" Command="{Binding TimeShiftForeCommand}" HorizontalOptions="Center"/>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Grid>
