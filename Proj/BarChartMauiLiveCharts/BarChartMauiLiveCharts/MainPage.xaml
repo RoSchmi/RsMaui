@@ -11,21 +11,26 @@
         <local:MainPageViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <ScrollView>
-            <Grid RowDefinitions="400, 100">
-                <lvc:CartesianChart
+        <ScrollView Orientation= "Both" VerticalScrollBarVisibility="Always">
+        <Grid RowDefinitions="400, Auto">
+               <!-- <ScrollView Grid.Row="0"  Orientation= "Both" VerticalScrollBarVisibility="Always"> -->
+                <!--    <Grid RowDefinitions="300" ColumnDefinitions="200"> -->
+                        <lvc:CartesianChart
                     Series="{Binding Series}" 
                     XAxes="{Binding XAxes}"
-                    YAxes="{Binding YAxes}"
-                    Grid.Row="0">
-                </lvc:CartesianChart>
+                    YAxes="{Binding YAxes}">
+                        </lvc:CartesianChart>
+                  <!--  </Grid> -->
+               <!-- </ScrollView> -->
                 <VerticalStackLayout Grid.Row="1">
+                    
                     <HorizontalStackLayout  HorizontalOptions="Center">
                         <Button Text="Week" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
                         <Button Text="Quarter" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
                         <Button Text="Year" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
                     </HorizontalStackLayout>
-                    <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center">
+                    
+                    <HorizontalStackLayout HorizontalOptions="Center">
                         <Button Text="Go Back" Padding="20,1" Margin="20"  Command="{Binding TimeShiftBackCommand}" HorizontalOptions="Center"/>
                         <Entry Text="{Binding DisplayTimeSpan}" Margin="20" MaximumHeightRequest="70" IsReadOnly="True" FontAttributes="Bold" MinimumWidthRequest="200"/>
                         <Button Text="Go Forth" Padding="20,20" Margin="20" MaximumHeightRequest="70" Command="{Binding TimeShiftForeCommand}" HorizontalOptions="Center"/>

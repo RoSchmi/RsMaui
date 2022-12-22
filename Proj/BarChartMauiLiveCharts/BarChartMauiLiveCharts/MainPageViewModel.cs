@@ -2,6 +2,7 @@
 
 namespace BarChartMauiLiveCharts
 {
+
     using System;
     using System.Globalization;
     //using CoreText;
@@ -48,9 +49,106 @@ namespace BarChartMauiLiveCharts
         }
         #endregion
 
+        [ObservableProperty]
+        private static DateTime currentDate = DateTime.Today;
+
+        [ObservableProperty]
+        private string displayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
+
+        #region [RelayCommand] SwitchToWeekDisplay()
+        [RelayCommand]
+        private static void SwitchToWeekDisplay()
+        {
+            int dummy78 = 1;
+            //CurrentDate = CurrentDate.DayOfYear > 8 ? CurrentDate.AddDays(-7) : CurrentDate;
+            //Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+        }
+        #endregion
+
+        #region Region [RelayCommand] TimeShiftBack()
+        [RelayCommand]
+        private void TimeShiftBack()
+        {
+            CurrentDate = CurrentDate.DayOfYear > 8 ? CurrentDate.AddDays(-7) : CurrentDate;
+            DisplayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
+            Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+        }
+        #endregion
+
+        #region Region [RelayCommand] TimeShiftFore()
+        [RelayCommand]
+        private void TimeShiftFore()
+
+        {
+            int firstDayOfWeek = CurrentDate.DayOfYear - ((int)CurrentDate.DayOfWeek - 1);
+
+            int firstDayOfThisWeek = DateTime.Today.DayOfYear - ((int)DateTime.Today.DayOfWeek - 1);
+
+            CurrentDate = firstDayOfWeek < firstDayOfThisWeek ? CurrentDate.AddDays(7) : CurrentDate;
+            DisplayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
+
+            Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+        }
+        #endregion
+
+        #region Region private ISeries[] series = new ISeries[]
+        private ISeries[] series = new ISeries[]
+        {
+            new ColumnSeries<int>
+            {
+                Values = new [] { 0 },
+            }
+        };
+        #endregion
+
+        public ISeries[] Series { get => series; set { _ = SetProperty(ref series, value); }}
+
+        #region Region private Axis[] xAxes = new Axis[]
+        private Axis[] xAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Days Week",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+
+                    LabelsPaint = new SolidColorPaint(SKColors.CornflowerBlue),
+                    TextSize = 20,
+                    UnitWidth = 1,
+                    MinStep = 1,
+                    Labeler = value =>  _ =  string.Concat("  ", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).DayOfWeek.ToString().AsSpan(0,3), "\r\n", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).ToString("dd.MMM", formatProviderInvariant )),
+    }
+            };
+        #endregion
+
+        public Axis[] XAxes { get => xAxes; set { _ = SetProperty(ref xAxes, value); } }
+
+        #region Region private Axis[] yAxes = new Axis[]
+        private Axis[] yAxes = new Axis[]
+        {
+             new Axis
+             {
+                   // Name = "Y Axis",
+                   // NamePaint = new SolidColorPaint(SKColors.Red),
+                   // LabelsPaint = new SolidColorPaint(SKColors.Green),
+                   // TextSize = 20,
+                   // LabelsAlignment = LiveChartsCore.Drawing.Align.Start,
+                   // Labels = new string[] { "Anne"},
+
+                    /*
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray)
+                    { 
+                        StrokeThickness = 2,
+                        PathEffect = new DashEffect(new float[] { 3, 3 }) 
+                    }
+                    */
+             }
+        };
+        #endregion
+        public Axis[] YAxes { get => yAxes; set { _ = SetProperty(ref yAxes, value); } }
+
         #region Region ActualizeWeekSeries
-        private static ISeries[] ActualizeWeekSeries(DateTime currentDate, 
-                                            ref float[] actYearValues, 
+        private static ISeries[] ActualizeWeekSeries(DateTime currentDate,
+                                            ref float[] actYearValues,
                                             ref float[] actYear_minus_1_Values,
                                             ref float[] actYear_minus_2_Values,
                                             ref float[] actYear_minus_3_Values
@@ -111,8 +209,8 @@ namespace BarChartMauiLiveCharts
                     //Values = new [] { 4, 4, 7, 2, 8, 4, 3 },               
                     Values = actWeek_Year_Minus_3_ColumnSeries.Values,
                     //Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 4 }, // mark
-                    MaxBarWidth = 20, // mark
-                    Padding = 2,
+                    MaxBarWidth = 10, // mark
+                    Padding = 1,
                     Stroke = null,
                     Fill = new SolidColorPaint(SKColors.Yellow) { },
                     //Fill = null,
@@ -120,23 +218,23 @@ namespace BarChartMauiLiveCharts
                 new ColumnSeries<int>
                 {
                     Values = actWeek_Year_Minus_2_ColumnSeries.Values,
-                    MaxBarWidth = 20, // mark
-                    Padding = 2,
+                    MaxBarWidth = 10, // mark
+                    Padding = 1,
                     Fill = new SolidColorPaint(SKColors.Green),
 
                 },
                 new ColumnSeries<int>
                 {
                     Values = actWeek_Year_Minus_1_ColumnSeries.Values,
-                    MaxBarWidth = 20, // mark
-                    Padding = 2,
+                    MaxBarWidth = 10, // mark
+                    Padding = 1,
                     Fill = new SolidColorPaint(SKColors.Blue),
                 },
                 new ColumnSeries<int>
                 {
                     Values = actWeekColumnSeries.Values,
-                    MaxBarWidth = 20, // mark
-                    Padding = 2,
+                    MaxBarWidth = 10, // mark
+                    Padding = 1,
                     Fill = new SolidColorPaint(SKColors.Red),
                 }
             };
@@ -144,42 +242,7 @@ namespace BarChartMauiLiveCharts
         }
         #endregion
 
-        [ObservableProperty]
-        private static DateTime currentDate = DateTime.Today;
-
-        [ObservableProperty]
-        private string displayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy")} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy")}");
-     
-        [RelayCommand]
-        private static void SwitchToWeekDisplay()
-        {
-            int dummy78 = 1;
-            //CurrentDate = CurrentDate.DayOfYear > 8 ? CurrentDate.AddDays(-7) : CurrentDate;
-            //Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
-        }
-
-        [RelayCommand]
-        private void TimeShiftBack()
-        {
-            CurrentDate = CurrentDate.DayOfYear > 8 ? CurrentDate.AddDays(-7) : CurrentDate;
-            DisplayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
-            Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
-        }
-
-        [RelayCommand]
-        private void TimeShiftFore()
-        {
-            int firstDayOfWeek = CurrentDate.DayOfYear - ((int)CurrentDate.DayOfWeek - 1);
-
-            int firstDayOfThisWeek = DateTime.Today.DayOfYear - ((int)DateTime.Today.DayOfWeek - 1);
-
-            CurrentDate = firstDayOfWeek < firstDayOfThisWeek ? CurrentDate.AddDays(7) : CurrentDate;
-            DisplayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
-
-            Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
-        }
-
-        #region Region Populate array
+        #region Region Populate arrays with simulation data
         private static float[] PopulateArray(DateTime date, int displacement, Random random)
         {
             int daysInYear = DateTime.IsLeapYear(date.Year) ? 366 : 365;
@@ -269,63 +332,5 @@ namespace BarChartMauiLiveCharts
             return currentYearValues;
         }
         #endregion
-
-        private ISeries[] series = new ISeries[]
-        {
-            new ColumnSeries<int>
-            {
-                Values = new [] { 0 },
-            }
-        };
-
-        public ISeries[] Series { get => series; set { _ = SetProperty(ref series, value); }}
-
-        private Axis[] xAxes = new Axis[]
-            {
-                new Axis
-                {
-                    Name = "Days Week",
-                    NamePaint = new SolidColorPaint(SKColors.Black),
-
-                    LabelsPaint = new SolidColorPaint(SKColors.CornflowerBlue),
-                    TextSize = 20,
-                    UnitWidth = 1,
-                    MinStep = 1,
-                    //Labeler = value => convertDoubleToDayOfWeek(value, currentDate),
-                 
-                    
-                  //Labeler = value =>  _ =  "  " + currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).DayOfWeek.ToString().Substring(0,3) + "\r\n" + currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).ToString("dd.MMM"),
-
-                  Labeler = value =>  _ =  string.Concat("  ", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).DayOfWeek.ToString().AsSpan(0,3), "\r\n", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).ToString("dd.MMM", formatProviderInvariant )),
-
-
-                 // Labeler = value =>  _ = FormattableString.Invariant($"{currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).DayOfWeek.ToString().AsSpan(0,3)} {currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).ToString("dd.MMM")}"),
-
-    }
-            };
-
-        public Axis[] XAxes { get => xAxes; set { _ = SetProperty(ref xAxes, value); } }
-
-        private Axis[] yAxes = new Axis[]
-        {
-             new Axis
-             {
-                   // Name = "Y Axis",
-                   // NamePaint = new SolidColorPaint(SKColors.Red),
-                   // LabelsPaint = new SolidColorPaint(SKColors.Green),
-                   // TextSize = 20,
-                   // LabelsAlignment = LiveChartsCore.Drawing.Align.Start,
-                   // Labels = new string[] { "Anne"},
-
-                    /*
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray)
-                    { 
-                        StrokeThickness = 2,
-                        PathEffect = new DashEffect(new float[] { 3, 3 }) 
-                    }
-                    */
-             }
-        };
-        public Axis[] YAxes { get => yAxes; set { _ = SetProperty(ref yAxes, value); } }
     }
 }
