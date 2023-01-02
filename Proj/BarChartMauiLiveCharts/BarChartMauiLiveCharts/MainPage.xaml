@@ -11,17 +11,19 @@
         <local:MainPageViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <ScrollView Orientation= "Both" VerticalScrollBarVisibility="Always">
-        <Grid RowDefinitions="400, Auto">
-               <!-- <ScrollView Grid.Row="0"  Orientation= "Both" VerticalScrollBarVisibility="Always"> -->
-                <!--    <Grid RowDefinitions="300" ColumnDefinitions="200"> -->
-                        <lvc:CartesianChart
+        <!-- <ScrollView Orientation= "Both" VerticalScrollBarVisibility="Always"> -->
+            <Grid RowDefinitions="400, Auto">
+                <ScrollView Grid.Row="0"  Orientation= "Both" VerticalScrollBarVisibility="Always">
+                <Grid RowDefinitions="300" ColumnDefinitions="1000"> 
+                <lvc:CartesianChart
                     Series="{Binding Series}" 
                     XAxes="{Binding XAxes}"
                     YAxes="{Binding YAxes}">
-                        </lvc:CartesianChart>
-                  <!--  </Grid> -->
-               <!-- </ScrollView> -->
+                </lvc:CartesianChart>
+                    </Grid>
+               </ScrollView>
+        
+            
                 <VerticalStackLayout Grid.Row="1">
                     
                     <HorizontalStackLayout  HorizontalOptions="Center">
@@ -37,6 +39,6 @@
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Grid>
-        </ScrollView>
+        <!--  </ScrollView> -->
     </ContentPage.Content>
 </ContentPage>

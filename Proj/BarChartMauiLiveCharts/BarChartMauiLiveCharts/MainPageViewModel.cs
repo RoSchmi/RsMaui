@@ -1,19 +1,20 @@
 ﻿
+using System;
+using System.Globalization;
+//using CoreText;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Devices;
+using LiveChartsCore.SkiaSharpView.Painting.Effects;
+using LiveChartsCore.Measure;
+
 
 namespace BarChartMauiLiveCharts
 {
-
-    using System;
-    using System.Globalization;
-    //using CoreText;
-    using LiveChartsCore;
-    using LiveChartsCore.SkiaSharpView;
-    using LiveChartsCore.SkiaSharpView.Painting;
-    using SkiaSharp;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Input;
-    using LiveChartsCore.SkiaSharpView.Painting.Effects;
-    using LiveChartsCore.Measure;
 
 
 
@@ -22,10 +23,28 @@ namespace BarChartMauiLiveCharts
 
         // https://github.com/beto-rodriguez/LiveCharts2/blob/master/docs/cartesianChart/columnseries.md
 
+        
+        private double displayHeight = DeviceDisplay.Current.MainDisplayInfo.Height;
+        DisplayOrientation screenOrientation = DeviceDisplay.Current.MainDisplayInfo.Orientation;
+
+        //DeviceDisplay. changedEvent;
+
+        // DeviceDisplay.Current.MainDisplayInfoChanged += DeviceDisplay.Current.MainDisplayInfoChanged;
+        /*
+                / Pixel Height: {DeviceDisplay.Current.MainDisplayInfo.Height}");
+            sb.AppendLine($"Density: {DeviceDisplay.Current.MainDisplayInfo.Density}");
+            sb.AppendLine($"Orientation: {DeviceDisplay.Current.MainDisplayInfo.Orientation}");
+            sb.AppendLine($"Rotation: {DeviceDisplay.Current.MainDisplayInfo.Rotation}");
+            sb.AppendLine($"Refresh Rate: {DeviceDisplay.Current.MainDisplayInfo.RefreshRate}");
+             */
+
         private float[] actYearValues = new float[366];
         private float[] actYear_minus_1_Values = new float[366];
         private float[] actYear_minus_2_Values = new float[366];
         private float[] actYear_minus_3_Values = new float[366];
+
+
+
 
         private ISeries[] WeekSeries { get; set; }
 
@@ -43,11 +62,26 @@ namespace BarChartMauiLiveCharts
             actYear_minus_2_Values = PopulateArray(DateTime.Today.AddYears(-2), 10, random);
             actYear_minus_3_Values = PopulateArray(DateTime.Today.AddYears(-3), -10, random);
 
+            DeviceDisplay.Current.MainDisplayInfoChanged += Current_MainDisplayInfoChanged;
+
+            //changedEvent += Current_MainDisplayInfoChanged;
+
             WeekSeries = ActualizeWeekSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
 
             Series = WeekSeries;
         }
+
+        private void Current_MainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
+        {
+            displayWidth = e.DisplayInfo.Width;
+            displayHeight = e.DisplayInfo.Height;
+            screenOrientation = e.DisplayInfo.Orientation;
+            int dummy33 = 1;
+        }
         #endregion
+
+        [ObservableProperty]
+        private double displayWidth = DeviceDisplay.Current.MainDisplayInfo.Width;
 
         [ObservableProperty]
         private static DateTime currentDate = DateTime.Today;
@@ -154,8 +188,8 @@ namespace BarChartMauiLiveCharts
                                             ref float[] actYear_minus_3_Values
                                             )
         {
-
-            int firstDayOfWeek = currentDate.DayOfYear - ((int)currentDate.DayOfWeek - 1);
+        
+        int firstDayOfWeek = currentDate.DayOfYear - ((int)currentDate.DayOfWeek - 1);
 
             int firstDayOfThisWeek = DateTime.Today.DayOfYear - ((int)DateTime.Today.DayOfWeek - 1);
 

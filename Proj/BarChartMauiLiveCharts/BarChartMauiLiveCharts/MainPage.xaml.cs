@@ -1,10 +1,26 @@
-﻿namespace BarChartMauiLiveCharts;
+﻿using BarChartMauiLiveCharts;
+using System.Collections.ObjectModel;
+
+namespace BarChartMauiLiveCharts;
 
 public partial class MainPage : ContentPage
-{   
-      public MainPage()
+{
+    MainPageViewModel vm;
+    //DeviceDisplay deviceDisplay;
+public MainPage(MainPageViewModel theViewModel)
     {
-		InitializeComponent();  
+        InitializeComponent();
+        BindingContext = theViewModel;
+        vm = theViewModel;
+
+       
     }
+
+    private void ResetButton_Clicked(object sender, EventArgs e)
+    {
+       
+    }
+
+   
 }
 
