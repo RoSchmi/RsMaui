@@ -23,7 +23,7 @@ namespace BarChartMauiLiveCharts
 
         // https://github.com/beto-rodriguez/LiveCharts2/blob/master/docs/cartesianChart/columnseries.md
 
-        
+
         private double displayHeight = DeviceDisplay.Current.MainDisplayInfo.Height;
         DisplayOrientation screenOrientation = DeviceDisplay.Current.MainDisplayInfo.Orientation;
 
@@ -57,7 +57,7 @@ namespace BarChartMauiLiveCharts
             Random random = new(1357);  // arbitrary seed
 
             // populate 4 arrays (each for the 365 or 366 days of a year) with 'arbitrary' example float values, representing the last 4 years 
-            actYearValues          = PopulateArray(DateTime.Today, 0, random);
+            actYearValues = PopulateArray(DateTime.Today, 0, random);
             actYear_minus_1_Values = PopulateArray(DateTime.Today.AddYears(-1), -10, random);
             actYear_minus_2_Values = PopulateArray(DateTime.Today.AddYears(-2), 10, random);
             actYear_minus_3_Values = PopulateArray(DateTime.Today.AddYears(-3), -10, random);
@@ -73,14 +73,24 @@ namespace BarChartMauiLiveCharts
 
         private void Current_MainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
         {
-            displayWidth = e.DisplayInfo.Width;
+            DisplayWidth = e.DisplayInfo.Width;
             displayHeight = e.DisplayInfo.Height;
             screenOrientation = e.DisplayInfo.Orientation;
             int dummy33 = 1;
         }
         #endregion
 
+        private readonly double widthFactor = 1.3;
+
+        //private double tableWidth;
+
+        //public double TableWidth { get => tableWidth; set { _ = SetProperty(ref tableWidth, value * widthFactor); } }
+
+        public double TableWidth => widthFactor * DisplayWidth;
+    
+
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(TableWidth))]
         private double displayWidth = DeviceDisplay.Current.MainDisplayInfo.Width;
 
         [ObservableProperty]

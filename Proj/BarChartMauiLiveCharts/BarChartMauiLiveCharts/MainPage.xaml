@@ -11,34 +11,45 @@
         <local:MainPageViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <!-- <ScrollView Orientation= "Both" VerticalScrollBarVisibility="Always"> -->
-            <Grid RowDefinitions="400, Auto">
-                <ScrollView Grid.Row="0"  Orientation= "Both" VerticalScrollBarVisibility="Always">
-                <Grid RowDefinitions="300" ColumnDefinitions="1000"> 
-                <lvc:CartesianChart
+        <ScrollView Orientation= "Vertical" VerticalScrollBarVisibility="Never">
+            <Grid RowDefinitions="Auto, Auto">
+                <!-- <Grid> -->
+
+                <ScrollView Grid.Row="0"  Orientation= "Horizontal" HorizontalScrollBarVisibility="Always"  VerticalScrollBarVisibility="Never">
+                    <Grid RowDefinitions="300, Auto" ColumnDefinitions="1000">
+                        <lvc:CartesianChart Grid.Row="0"
                     Series="{Binding Series}" 
                     XAxes="{Binding XAxes}"
                     YAxes="{Binding YAxes}">
-                </lvc:CartesianChart>
+                        </lvc:CartesianChart>
+                        <Label Grid.Row="1" Text="&lt; &lt; >> ScrollBar" MinimumWidthRequest="100" BackgroundColor="DarkGray"></Label>
                     </Grid>
-               </ScrollView>
-        
-            
-                <VerticalStackLayout Grid.Row="1">
-                    
-                    <HorizontalStackLayout  HorizontalOptions="Center">
-                        <Button Text="Week" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
-                        <Button Text="Quarter" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
-                        <Button Text="Year" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
-                    </HorizontalStackLayout>
-                    
-                    <HorizontalStackLayout HorizontalOptions="Center">
-                        <Button Text="Go Back" Padding="20,1" Margin="20"  Command="{Binding TimeShiftBackCommand}" HorizontalOptions="Center"/>
-                        <Entry Text="{Binding DisplayTimeSpan}" Margin="20" MaximumHeightRequest="70" IsReadOnly="True" FontAttributes="Bold" MinimumWidthRequest="200"/>
-                        <Button Text="Go Forth" Padding="20,20" Margin="20" MaximumHeightRequest="70" Command="{Binding TimeShiftForeCommand}" HorizontalOptions="Center"/>
-                    </HorizontalStackLayout>
-                </VerticalStackLayout>
+                </ScrollView>
+
+                <Grid Grid.Row="1" ColumnDefinitions="{Binding DisplayWidth}">
+                    <VerticalStackLayout>
+
+                        <HorizontalStackLayout   HorizontalOptions="Center">
+                            <Button Text="Week" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
+                            <Button Text="Quarter" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
+                            <Button Text="Year" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout HorizontalOptions="Center">
+                            <Button Text="Go Back" Padding="20,1" Margin="20"  Command="{Binding TimeShiftBackCommand}" HorizontalOptions="Center"/>
+                            <Entry Text="{Binding DisplayTimeSpan}" Margin="20" MaximumHeightRequest="70" IsReadOnly="True" FontAttributes="Bold" MinimumWidthRequest="200"/>
+                            <Button Text="Go Forth" Padding="20,20" Margin="20" MaximumHeightRequest="70" Command="{Binding TimeShiftForeCommand}" HorizontalOptions="Center"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout   HorizontalOptions="Center">
+                            <Button Text="{Binding TableWidth}" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
+                            <Button Text="{Binding DisplayWidth}" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
+                            <Button Text="Year" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                    </Grid>
+
             </Grid>
-        <!--  </ScrollView> -->
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
