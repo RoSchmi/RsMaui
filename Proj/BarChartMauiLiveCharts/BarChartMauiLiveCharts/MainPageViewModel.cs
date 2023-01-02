@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Devices;
 using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using LiveChartsCore.Measure;
-
+using System.Runtime.CompilerServices;
 
 namespace BarChartMauiLiveCharts
 {
@@ -80,17 +80,18 @@ namespace BarChartMauiLiveCharts
         }
         #endregion
 
-        private readonly double widthFactor = 1.3;
+        [ObservableProperty]
+        private static double widthFactor = 1.3;
 
         //private double tableWidth;
 
         //public double TableWidth { get => tableWidth; set { _ = SetProperty(ref tableWidth, value * widthFactor); } }
 
-        public double TableWidth => widthFactor * DisplayWidth;
+        //public double TableWidth => WidthFactor * DisplayWidth;
     
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(TableWidth))]
+        //[NotifyPropertyChangedFor(nameof(TableWidth))]
         private double displayWidth = DeviceDisplay.Current.MainDisplayInfo.Width;
 
         [ObservableProperty]
@@ -99,10 +100,17 @@ namespace BarChartMauiLiveCharts
         [ObservableProperty]
         private string displayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
 
+
+        private static bool toggleSwitch = false;
+
+
         #region [RelayCommand] SwitchToWeekDisplay()
         [RelayCommand]
-        private static void SwitchToWeekDisplay()
+        private void SwitchToWeekDisplay()
         {
+            WidthFactor = toggleSwitch ? 0.7 : 1.3;
+            toggleSwitch = !toggleSwitch;
+
             int dummy78 = 1;
             //CurrentDate = CurrentDate.DayOfYear > 8 ? CurrentDate.AddDays(-7) : CurrentDate;
             //Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);

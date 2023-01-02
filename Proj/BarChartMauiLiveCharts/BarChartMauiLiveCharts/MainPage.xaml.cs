@@ -1,6 +1,9 @@
 ﻿using BarChartMauiLiveCharts;
 using System.Collections.ObjectModel;
 
+
+
+
 namespace BarChartMauiLiveCharts;
 
 public partial class MainPage : ContentPage

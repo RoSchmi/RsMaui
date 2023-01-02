@@ -3,52 +3,67 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BarChartMauiLiveCharts.MainPage"
              xmlns:local="clr-namespace:BarChartMauiLiveCharts"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui">
-    <!-- xmlns:vms="clr-namespace:ViewModelSamples.Bars.RowsWithLabels;assembly=ViewModelSamples"> -->
-
-    
+     
         <ContentPage.BindingContext>
         <local:MainPageViewModel/>
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:MultiMathExpressionConverter x:Key="MultiMathExpressionConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <ScrollView Orientation= "Vertical" VerticalScrollBarVisibility="Never">
+        <ScrollView Orientation= "Vertical" VerticalScrollBarVisibility="Always">
             <Grid RowDefinitions="Auto, Auto">
-                <!-- <Grid> -->
-
                 <ScrollView Grid.Row="0"  Orientation= "Horizontal" HorizontalScrollBarVisibility="Always"  VerticalScrollBarVisibility="Never">
-                    <Grid RowDefinitions="300, Auto" ColumnDefinitions="1000">
+                    <Grid RowDefinitions="300, Auto" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition>
+                                <ColumnDefinition.Width>
+                                    <MultiBinding Converter="{StaticResource MultiMathExpressionConverter}" ConverterParameter="x0 * x1">
+                                    <Binding Path="DisplayWidth" />
+                                    <Binding Path="WidthFactor" />
+                                </MultiBinding>
+                                </ColumnDefinition.Width>
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
                         <lvc:CartesianChart Grid.Row="0"
                     Series="{Binding Series}" 
                     XAxes="{Binding XAxes}"
                     YAxes="{Binding YAxes}">
-                        </lvc:CartesianChart>
-                        <Label Grid.Row="1" Text="&lt; &lt; >> ScrollBar" MinimumWidthRequest="100" BackgroundColor="DarkGray"></Label>
+                    </lvc:CartesianChart>
+                    <Label Grid.Row="1" Text="&lt; &lt; >> ScrollBar" HeightRequest="30" BackgroundColor="DarkGray"></Label>
                     </Grid>
                 </ScrollView>
 
                 <Grid Grid.Row="1" ColumnDefinitions="{Binding DisplayWidth}">
                     <VerticalStackLayout>
-
                         <HorizontalStackLayout   HorizontalOptions="Center">
                             <Button Text="Week" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
                             <Button Text="Quarter" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
                             <Button Text="Year" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
                         </HorizontalStackLayout>
-
                         <HorizontalStackLayout HorizontalOptions="Center">
                             <Button Text="Go Back" Padding="20,1" Margin="20"  Command="{Binding TimeShiftBackCommand}" HorizontalOptions="Center"/>
                             <Entry Text="{Binding DisplayTimeSpan}" Margin="20" MaximumHeightRequest="70" IsReadOnly="True" FontAttributes="Bold" MinimumWidthRequest="200"/>
                             <Button Text="Go Forth" Padding="20,20" Margin="20" MaximumHeightRequest="70" Command="{Binding TimeShiftForeCommand}" HorizontalOptions="Center"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout   HorizontalOptions="Center">
-                            <Button Text="{Binding TableWidth}" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
+                            <Button Text="{Binding DisplayWidth}" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
                             <Button Text="{Binding DisplayWidth}" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
-                            <Button Text="Year" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
+                            <Button  Padding="20,20" Margin="20" HorizontalOptions="Center">
+                                <Button.Text>
+                                    <MultiBinding Converter="{StaticResource MultiMathExpressionConverter}" ConverterParameter="(int)x0 * (int)x1">
+                                        <Binding Path="DisplayWidth" />
+                                        <Binding Path="WidthFactor" />
+                                    </MultiBinding>
+                                </Button.Text>
+                            </Button>
                         </HorizontalStackLayout>
-
                     </VerticalStackLayout>
-                    </Grid>
-
+                </Grid>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

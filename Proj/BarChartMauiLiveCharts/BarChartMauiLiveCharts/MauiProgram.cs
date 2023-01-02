@@ -1,5 +1,7 @@
-﻿using Microsoft.Maui.Controls.Hosting;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
+
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 
@@ -13,6 +15,7 @@ public static class MauiProgram
         builder
             .UseSkiaSharp(true)
 			.UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
