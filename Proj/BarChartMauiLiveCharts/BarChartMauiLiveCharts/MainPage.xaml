@@ -19,16 +19,16 @@
             <Grid RowDefinitions="Auto, Auto">
                 <ScrollView Grid.Row="0"  Orientation= "Horizontal" HorizontalScrollBarVisibility="Always"  VerticalScrollBarVisibility="Never">
                     <Grid RowDefinitions="300, Auto" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition>
+                        <Grid ColumnDefinitions="{Binding  DisplayWidth}">
+                            <!-- <ColumnDefinition>
                                 <ColumnDefinition.Width>
                                     <MultiBinding Converter="{StaticResource MultiMathExpressionConverter}" ConverterParameter="x0 * x1">
                                     <Binding Path="DisplayWidth" />
                                     <Binding Path="WidthFactor" />
                                 </MultiBinding>
                                 </ColumnDefinition.Width>
-                            </ColumnDefinition>
-                        </Grid.ColumnDefinitions>
+                            </ColumnDefinition> -->
+                        </Grid>
                         <lvc:CartesianChart Grid.Row="0"
                     Series="{Binding Series}" 
                     XAxes="{Binding XAxes}"
