@@ -19,18 +19,18 @@
             <Grid RowDefinitions="Auto, Auto">
                 <ScrollView Grid.Row="0"  Orientation= "Horizontal" HorizontalScrollBarVisibility="Always"  VerticalScrollBarVisibility="Never">
                     <Grid RowDefinitions="300, Auto" >
-                        <Grid ColumnDefinitions="{Binding  DisplayWidth}">
-                            <!-- <ColumnDefinition>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition>
                                 <ColumnDefinition.Width>
                                     <MultiBinding Converter="{StaticResource MultiMathExpressionConverter}" ConverterParameter="x0 * x1">
-                                    <Binding Path="DisplayWidth" />
-                                    <Binding Path="WidthFactor" />
-                                </MultiBinding>
+                                        <Binding Path="DisplayWidth" />
+                                        <Binding Path="WidthFactor" />
+                                    </MultiBinding>
                                 </ColumnDefinition.Width>
-                            </ColumnDefinition> -->
-                        </Grid>
-                        <lvc:CartesianChart Grid.Row="0"
-                    Series="{Binding Series}" 
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <lvc:CartesianChart Grid.Row="0" 
+                        Series="{Binding Series}" 
                     XAxes="{Binding XAxes}"
                     YAxes="{Binding YAxes}">
                     </lvc:CartesianChart>
@@ -41,21 +41,22 @@
                 <Grid Grid.Row="1" ColumnDefinitions="{Binding DisplayWidth}">
                     <VerticalStackLayout>
                         <HorizontalStackLayout   HorizontalOptions="Center">
-                            <Button Text="Week" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
-                            <Button Text="Quarter" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
-                            <Button Text="Year" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
+                            <Button Text="Week" Padding="10,10" Margin="20" MaximumHeightRequest="40"  Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
+                            <Button Text="Months" Padding="10,10" Margin="20" MaximumHeightRequest="40" Command="{Binding SwitchToMonthsDisplayCommand}" HorizontalOptions="Center"/>
+                            <Button Text="Quarters" Padding="10,10" Margin="20" MaximumHeightRequest="40" Command="{Binding SwitchToQuartersDisplayCommand}" HorizontalOptions="Center"/>
+                            <Button Text="Years" Padding="10,10" Margin="20" MaximumHeightRequest="40" Command="{Binding SwitchToYearsDisplayCommand}" HorizontalOptions="Center"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout HorizontalOptions="Center">
-                            <Button Text="Go Back" Padding="20,1" Margin="20"  Command="{Binding TimeShiftBackCommand}" HorizontalOptions="Center"/>
+                            <Button Text="Go Back" Padding="20,1" Margin="20"  Command="{Binding WeekShiftBackCommand}" HorizontalOptions="Center"/>
                             <Entry Text="{Binding DisplayTimeSpan}" Margin="20" MaximumHeightRequest="70" IsReadOnly="True" FontAttributes="Bold" MinimumWidthRequest="200"/>
-                            <Button Text="Go Forth" Padding="20,20" Margin="20" MaximumHeightRequest="70" Command="{Binding TimeShiftForeCommand}" HorizontalOptions="Center"/>
+                            <Button Text="Go Forth" Padding="20,20" Margin="20" MaximumHeightRequest="70" Command="{Binding WeekShiftForeCommand}" HorizontalOptions="Center"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout   HorizontalOptions="Center">
                             <Button Text="{Binding DisplayWidth}" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
                             <Button Text="{Binding DisplayWidth}" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
                             <Button  Padding="20,20" Margin="20" HorizontalOptions="Center">
                                 <Button.Text>
-                                    <MultiBinding Converter="{StaticResource MultiMathExpressionConverter}" ConverterParameter="(int)x0 * (int)x1">
+                                    <MultiBinding Converter="{StaticResource MultiMathExpressionConverter}" ConverterParameter="x0:F0 * x1:F0">
                                         <Binding Path="DisplayWidth" />
                                         <Binding Path="WidthFactor" />
                                     </MultiBinding>

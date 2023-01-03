@@ -12,6 +12,9 @@ using Microsoft.Maui.Devices;
 using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using LiveChartsCore.Measure;
 using System.Runtime.CompilerServices;
+using LiveChartsCore.Drawing;
+//using Microsoft.VisualBasic;
+//using static CoreFoundation.DispatchSource;
 
 namespace BarChartMauiLiveCharts
 {
@@ -43,10 +46,17 @@ namespace BarChartMauiLiveCharts
         private float[] actYear_minus_2_Values = new float[366];
         private float[] actYear_minus_3_Values = new float[366];
 
+        enum Period { Week, Month, Quarter, Year };
 
 
 
         private ISeries[] WeekSeries { get; set; }
+
+        private ISeries[] MonthsSeries { get; set; }
+
+        private ISeries[] QuartersSeries { get; set; }
+
+        private ISeries[] YearsSeries { get; set; }
 
         private static readonly IFormatProvider formatProviderInvariant = CultureInfo.InvariantCulture.DateTimeFormat;
 
@@ -75,20 +85,12 @@ namespace BarChartMauiLiveCharts
         {
             DisplayWidth = e.DisplayInfo.Width;
             displayHeight = e.DisplayInfo.Height;
-            screenOrientation = e.DisplayInfo.Orientation;
-            int dummy33 = 1;
+            screenOrientation = e.DisplayInfo.Orientation;     
         }
         #endregion
 
         [ObservableProperty]
-        private static double widthFactor = 1.3;
-
-        //private double tableWidth;
-
-        //public double TableWidth { get => tableWidth; set { _ = SetProperty(ref tableWidth, value * widthFactor); } }
-
-        //public double TableWidth => WidthFactor * DisplayWidth;
-    
+        private static double widthFactor = 0.6;
 
         [ObservableProperty]
         //[NotifyPropertyChangedFor(nameof(TableWidth))]
@@ -103,23 +105,131 @@ namespace BarChartMauiLiveCharts
 
         private static bool toggleSwitch = false;
 
+       
+
+        #region [RelayCommand] SwitchToYearsDisplay()
+        [RelayCommand]
+        private void SwitchToYearsDisplay()
+        {
+            YearsSeries = ActualizeYearsSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+
+            Series = YearsSeries;
+
+            XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Last 4 Years",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+                    LabelsPaint = new SolidColorPaint(SKColors.CornflowerBlue),
+                    TextSize = 20,
+                    UnitWidth = 1,
+                    MinStep = 1,
+                    Labeler = value =>  _ =  string.Concat(new DateTime(currentDate.Year, 1, 1).AddMonths((int)value).ToString("MMM", formatProviderInvariant), " - ",  new DateTime(currentDate.Year, 1, 1).AddMonths(((int)value) + 11).ToString("MMM", formatProviderInvariant)),
+                }
+            };
+        }
+        #endregion
+
+        #region [RelayCommand] SwitchToQuartersDisplay()
+        [RelayCommand]
+        private void SwitchToQuartersDisplay()
+        {
+            QuartersSeries = ActualizeQuartersSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+
+            Series = QuartersSeries;
+
+            XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Quarters of last 4 Years",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+                    LabelsPaint = new SolidColorPaint(SKColors.CornflowerBlue),
+                    TextSize = 20,
+                    UnitWidth = 1,
+                    MinStep = 1,
+                    Labeler = value =>  _ =  string.Concat(new DateTime(currentDate.Year, 1, 1).AddMonths(3 * (int)value).ToString("MMM", formatProviderInvariant), " - ",  new DateTime(currentDate.Year, 1, 1).AddMonths((3 * (int)value) + 2).ToString("MMM", formatProviderInvariant)),
+                }
+            };
+        }
+        #endregion
+
+
+        #region [RelayCommand] SwitchToMonthsDisplay()
+        [RelayCommand]
+        private void SwitchToMonthsDisplay()
+        {
+            MonthsSeries = ActualizeMonthsSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+
+            Series = MonthsSeries;
+
+            XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Months of last 4 Years",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+                    LabelsPaint = new SolidColorPaint(SKColors.CornflowerBlue),
+                    TextSize = 20,
+                    UnitWidth = 1,
+                    MinStep = 1,
+                    Labeler = value =>  _ =  string.Concat(new DateTime(currentDate.Year, 1, 1).AddMonths((int)value).ToString("MMM", formatProviderInvariant )),
+                }
+            };
+        }
+        #endregion
 
         #region [RelayCommand] SwitchToWeekDisplay()
         [RelayCommand]
         private void SwitchToWeekDisplay()
         {
-            WidthFactor = toggleSwitch ? 0.7 : 1.3;
+            WeekSeries = ActualizeWeekSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+
+            Series = WeekSeries;
+
+            XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Days of Week",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+                    LabelsPaint = new SolidColorPaint(SKColors.CornflowerBlue),
+                    TextSize = 20,
+                    UnitWidth = 1,
+                    MinStep = 1,
+                    Labeler = value =>  _ =  string.Concat("  ", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).DayOfWeek.ToString().AsSpan(0,3), "\r\n", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).ToString("dd.MMM", formatProviderInvariant )),     
+                }
+            };
+
+            YAxes = new Axis[]
+            {
+                new Axis
+                {          
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+                    LabelsPaint = new SolidColorPaint(SKColors.CornflowerBlue),
+                    TextSize = 20,
+                    UnitWidth = 1,
+                    MinStep = 1,
+                    MinLimit = 0,
+                     
+                }
+            };
+
+
+            /*
+            WidthFactor = toggleSwitch ? 0.6f : 1.0f;
             toggleSwitch = !toggleSwitch;
+            */
 
             int dummy78 = 1;
-            //CurrentDate = CurrentDate.DayOfYear > 8 ? CurrentDate.AddDays(-7) : CurrentDate;
-            //Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+            
         }
         #endregion
 
-        #region Region [RelayCommand] TimeShiftBack()
+        #region Region [RelayCommand] WeekShiftBack()
         [RelayCommand]
-        private void TimeShiftBack()
+        private void WeekShiftBack()
         {
             CurrentDate = CurrentDate.DayOfYear > 8 ? CurrentDate.AddDays(-7) : CurrentDate;
             DisplayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
@@ -127,9 +237,9 @@ namespace BarChartMauiLiveCharts
         }
         #endregion
 
-        #region Region [RelayCommand] TimeShiftFore()
+        #region Region [RelayCommand] WeekShiftFore()
         [RelayCommand]
-        private void TimeShiftFore()
+        private void WeekShiftFore()
 
         {
             int firstDayOfWeek = CurrentDate.DayOfYear - ((int)CurrentDate.DayOfWeek - 1);
@@ -140,6 +250,7 @@ namespace BarChartMauiLiveCharts
             DisplayTimeSpan = FormattableString.Invariant($"{currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).ToString("dd.MM.yyyy", formatProviderInvariant)} - {currentDate.AddDays(-(int)currentDate.DayOfWeek + 1).AddDays(6).ToString("dd.MM.yyyy", formatProviderInvariant)}");
 
             Series = ActualizeWeekSeries(CurrentDate, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
+
         }
         #endregion
 
@@ -168,7 +279,7 @@ namespace BarChartMauiLiveCharts
                     UnitWidth = 1,
                     MinStep = 1,
                     Labeler = value =>  _ =  string.Concat("  ", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).DayOfWeek.ToString().AsSpan(0,3), "\r\n", currentDate.AddDays(-((int)currentDate.DayOfWeek - 1) + (int)value).ToString("dd.MMM", formatProviderInvariant )),
-    }
+                }
             };
         #endregion
 
@@ -178,28 +289,374 @@ namespace BarChartMauiLiveCharts
         private Axis[] yAxes = new Axis[]
         {
              new Axis
-             {
-                   // Name = "Y Axis",
-                   // NamePaint = new SolidColorPaint(SKColors.Red),
-                   // LabelsPaint = new SolidColorPaint(SKColors.Green),
-                   // TextSize = 20,
-                   // LabelsAlignment = LiveChartsCore.Drawing.Align.Start,
-                   // Labels = new string[] { "Anne"},
-
-                    /*
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray)
-                    { 
-                        StrokeThickness = 2,
-                        PathEffect = new DashEffect(new float[] { 3, 3 }) 
-                    }
-                    */
-             }
+             {}
         };
         #endregion
         public Axis[] YAxes { get => yAxes; set { _ = SetProperty(ref yAxes, value); } }
 
-        #region Region ActualizeWeekSeries
-        private static ISeries[] ActualizeWeekSeries(DateTime currentDate,
+
+        #region Region ActualizeYearsSeries
+        private static ISeries[] ActualizeYearsSeries(DateTime currentDate,
+                                            ref float[] actYearValues,
+                                            ref float[] actYear_minus_1_Values,
+                                            ref float[] actYear_minus_2_Values,
+                                            ref float[] actYear_minus_3_Values
+                                            )
+        {
+            var actYear_Minus_0_Years_ColumnSeries = new ColumnSeries<int>();
+            var actYear_Minus_1_Years_ColumnSeries = new ColumnSeries<int>();
+            var actYear_Minus_2_Years_ColumnSeries = new ColumnSeries<int>();
+            var actYear_Minus_3_Years_ColumnSeries = new ColumnSeries<int>();
+
+            int yearOffset = 0;
+
+            actYear_Minus_0_Years_ColumnSeries.Values = new[] {
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Year, ref actYearValues),
+            };
+
+            yearOffset = -1;
+
+            actYear_Minus_1_Years_ColumnSeries.Values = new[] {
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Year, ref actYear_minus_1_Values),
+            };
+
+            yearOffset = -2;
+
+            actYear_Minus_2_Years_ColumnSeries.Values = new[] {
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Year, ref actYear_minus_2_Values),
+            };
+
+            yearOffset = -3;
+
+            actYear_Minus_3_Years_ColumnSeries.Values = new[] {
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Year, ref actYear_minus_3_Values),
+            };
+
+            var localYearsSeries = new ISeries[]
+            {
+                new ColumnSeries<int>
+                {
+                    //Values = new [] { 4, 4, 7, 2, 8, 4, 3 },               
+                    Values = actYear_Minus_3_Years_ColumnSeries.Values,
+                    //Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 4 }, // mark
+                    MaxBarWidth = 100, // mark
+                    Padding = 1,
+                    Stroke = null,
+                    Fill = new SolidColorPaint(SKColors.Yellow) { },
+                    //Fill = null,
+                },
+                new ColumnSeries<int>
+                {
+                    Values = actYear_Minus_2_Years_ColumnSeries.Values,
+                    MaxBarWidth = 100, // mark
+                    Padding = 1,
+                    Fill = new SolidColorPaint(SKColors.Green),
+
+                },
+                new ColumnSeries<int>
+                {
+                    Values = actYear_Minus_1_Years_ColumnSeries.Values,
+                    MaxBarWidth = 100, // mark
+                    Padding = 1,
+                    Fill = new SolidColorPaint(SKColors.Blue),
+                },
+                new ColumnSeries<int>
+                {
+                    Values = actYear_Minus_0_Years_ColumnSeries.Values,
+                    MaxBarWidth = 100, // mark
+                    Padding = 1,
+                    Fill = new SolidColorPaint(SKColors.Red),
+                }
+            };
+            return localYearsSeries;
+
+        }
+        #endregion
+
+
+        #region Region ActualizeQuartersSeries
+        private static ISeries[] ActualizeQuartersSeries(DateTime currentDate,
+                                            ref float[] actYearValues,
+                                            ref float[] actYear_minus_1_Values,
+                                            ref float[] actYear_minus_2_Values,
+                                            ref float[] actYear_minus_3_Values
+                                            )
+        {
+            var actYear_Minus_0_Quarters_ColumnSeries = new ColumnSeries<int>();
+            var actYear_Minus_1_Quarters_ColumnSeries = new ColumnSeries<int>();
+            var actYear_Minus_2_Quarters_ColumnSeries = new ColumnSeries<int>();
+            var actYear_Minus_3_Quarters_ColumnSeries = new ColumnSeries<int>();
+
+            int yearOffset = 0;
+
+            actYear_Minus_0_Quarters_ColumnSeries.Values = new[] {
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Quarter, ref actYearValues),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 4, 1), Period.Quarter, ref actYearValues),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 7, 1), Period.Quarter, ref actYearValues),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 9, 1), Period.Quarter, ref actYearValues),
+            };
+
+            yearOffset = -1;
+
+            actYear_Minus_1_Quarters_ColumnSeries.Values = new[] {
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Quarter, ref actYear_minus_1_Values),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 4, 1), Period.Quarter, ref actYear_minus_1_Values),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 7, 1), Period.Quarter, ref actYear_minus_1_Values),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 9, 1), Period.Quarter, ref actYear_minus_1_Values),
+            };
+
+            yearOffset = -2;
+
+            actYear_Minus_2_Quarters_ColumnSeries.Values = new[] {
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Quarter, ref actYear_minus_2_Values),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 4, 1), Period.Quarter, ref actYear_minus_2_Values),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 7, 1), Period.Quarter, ref actYear_minus_2_Values),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 9, 1), Period.Quarter, ref actYear_minus_2_Values),
+            };
+
+            yearOffset = -3;
+
+            actYear_Minus_3_Quarters_ColumnSeries.Values = new[] {
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Quarter, ref actYear_minus_3_Values),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 4, 1), Period.Quarter, ref actYear_minus_3_Values),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 7, 1), Period.Quarter, ref actYear_minus_3_Values),
+                (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 9, 1), Period.Quarter, ref actYear_minus_3_Values),
+            };
+
+            var localQuartersSeries = new ISeries[]
+            {
+                new ColumnSeries<int>
+                {
+                    //Values = new [] { 4, 4, 7, 2, 8, 4, 3 },               
+                    Values = actYear_Minus_3_Quarters_ColumnSeries.Values,
+                    //Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 4 }, // mark
+                    
+                    MaxBarWidth = 40,
+                    Padding = 1,
+                    Stroke = null,
+                    Fill = new SolidColorPaint(SKColors.Yellow) { },
+                    //Fill = null,
+                },
+                new ColumnSeries<int>
+                {
+                    Values = actYear_Minus_2_Quarters_ColumnSeries.Values,
+
+                    MaxBarWidth = 40,
+
+                    Padding = 1,
+                    Fill = new SolidColorPaint(SKColors.Green),
+
+                },
+                new ColumnSeries<int>
+                {
+                    Values = actYear_Minus_1_Quarters_ColumnSeries.Values,
+                    MaxBarWidth = 40, // mark
+                    Padding = 1,
+                    Fill = new SolidColorPaint(SKColors.Blue),
+                },
+                new ColumnSeries<int>
+                {
+                    Values = actYear_Minus_0_Quarters_ColumnSeries.Values,
+                    MaxBarWidth = 40, // mark
+                    Padding = 1,
+                    Fill = new SolidColorPaint(SKColors.Red),
+                }
+            };
+            return localQuartersSeries;
+
+        }
+        #endregion
+
+
+
+
+        #region Region ActualizeMonthsSeries
+        private static ISeries[] ActualizeMonthsSeries(DateTime currentDate,
+                                            ref float[] actYearValues,
+                                            ref float[] actYear_minus_1_Values,
+                                            ref float[] actYear_minus_2_Values,
+                                            ref float[] actYear_minus_3_Values
+                                            )
+        {
+            int firstDayOfThisMonth = currentDate.DayOfYear - (currentDate.Day - 1);
+
+           
+
+            var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddSeconds(-1);
+
+
+            //  int firstDayOfThisWeek = DateTime.Today.DayOfYear - ((int)DateTime.Today.DayOfWeek - 1);
+
+            var actYear_Minus_0_Months_ColumnSeries = new ColumnSeries<int>();
+            var actYear_Minus_1_Months_ColumnSeries = new ColumnSeries<int>();
+            var actYear_Minus_2_Months_ColumnSeries = new ColumnSeries<int>();
+            var actYear_Minus_3_Months_ColumnSeries = new ColumnSeries<int>();
+
+            int yearOffset = 0;
+
+            actYear_Minus_0_Months_ColumnSeries.Values = new[] {
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 2, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 3, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 4, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 5, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 6, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 7, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 8, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 9, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 10, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 11, 1), Period.Month, ref actYearValues),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 12, 1), Period.Month, ref actYearValues)
+            };
+
+            yearOffset = -1;
+
+            actYear_Minus_1_Months_ColumnSeries.Values = new[] { (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 2, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 3, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 4, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 5, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 6, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 7, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 8, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 9, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 10, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 11, 1), Period.Month, ref actYear_minus_1_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 12, 1), Period.Month, ref actYear_minus_1_Values)
+            };
+
+            yearOffset = -2;
+
+            actYear_Minus_2_Months_ColumnSeries.Values = new[] { (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 2, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 3, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 4, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 5, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 6, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 7, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 8, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 9, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 10, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 11, 1), Period.Month, ref actYear_minus_2_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 12, 1), Period.Month, ref actYear_minus_2_Values)
+            };
+
+            yearOffset = -3;
+
+            actYear_Minus_3_Months_ColumnSeries.Values = new[] { (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 1, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 2, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 3, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 4, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 5, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 6, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 7, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 8, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 9, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 10, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 11, 1), Period.Month, ref actYear_minus_3_Values),
+                                                         (int)GetPeriodSum(new DateTime(currentDate.AddYears(yearOffset).Year, 12, 1), Period.Month, ref actYear_minus_3_Values)
+            };
+
+            var localMonthsSeries = new ISeries[]
+            {
+                new ColumnSeries<int>
+                {
+                    //Values = new [] { 4, 4, 7, 2, 8, 4, 3 },               
+                    Values = actYear_Minus_3_Months_ColumnSeries.Values,
+                    //Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 4 }, // mark
+                    MaxBarWidth = 12, // mark
+                    Padding = 1,
+                    Stroke = null,
+                    Fill = new SolidColorPaint(SKColors.Yellow) { },
+                    //Fill = null,
+                },
+                new ColumnSeries<int>
+                {
+                    Values = actYear_Minus_2_Months_ColumnSeries.Values,
+                    MaxBarWidth = 12, // mark
+                    Padding = 1,
+                    Fill = new SolidColorPaint(SKColors.Green),
+
+                },
+                new ColumnSeries<int>
+                {
+                    Values = actYear_Minus_1_Months_ColumnSeries.Values,
+                    MaxBarWidth = 12, // mark
+                    Padding = 1,
+                    Fill = new SolidColorPaint(SKColors.Blue),
+                },
+                new ColumnSeries<int>
+                {
+                    Values = actYear_Minus_0_Months_ColumnSeries.Values,
+                    MaxBarWidth = 12, // mark
+                    Padding = 1,
+                    Fill = new SolidColorPaint(SKColors.Red),
+                }
+            };
+            return localMonthsSeries;
+        }
+        #endregion
+
+        private static float GetPeriodSum(DateTime date, Period period, ref float[] actYearValues)
+        {
+            DateTime firstDayOfPeriod = date;
+            DateTime lastDayOfPeriod = date;
+            int daysInPeriod = lastDayOfPeriod.DayOfYear - firstDayOfPeriod.DayOfYear;
+
+            switch (period)
+            {
+                case Period.Month:
+                        {
+                        firstDayOfPeriod = new DateTime(date.Year, date.Month, 1);
+                        lastDayOfPeriod = firstDayOfPeriod.AddMonths(1).AddSeconds(-1);
+                        daysInPeriod = DateTime.Today < lastDayOfPeriod ? DateTime.Today.DayOfYear - firstDayOfPeriod.DayOfYear : lastDayOfPeriod.DayOfYear - firstDayOfPeriod.DayOfYear;
+                        }
+
+                    break;
+
+                    case Period.Quarter:
+                        {
+                            firstDayOfPeriod = new DateTime(date.Year, date.Month , 1);
+                            lastDayOfPeriod = firstDayOfPeriod.AddMonths(3).AddSeconds(-1);
+                            daysInPeriod = DateTime.Today < lastDayOfPeriod ? DateTime.Today.DayOfYear - firstDayOfPeriod.DayOfYear : lastDayOfPeriod.DayOfYear - firstDayOfPeriod.DayOfYear;
+                        }
+
+                        break;
+
+
+                    case Period.Year:
+                    {
+                        firstDayOfPeriod = new DateTime(date.Year, 1, 1);
+                        lastDayOfPeriod = firstDayOfPeriod.AddMonths(12).AddSeconds(-1);
+                        daysInPeriod = DateTime.Today < lastDayOfPeriod ? DateTime.Today.DayOfYear - firstDayOfPeriod.DayOfYear : lastDayOfPeriod.DayOfYear - firstDayOfPeriod.DayOfYear;
+                    }
+                    break;
+
+                }
+
+            /*
+            var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+            DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddSeconds(-1);
+            int firstIntDayOfMonth = firstDayOfMonth.DayOfYear;
+            int lastIntDayOfMonth = lastDayOfMonth.DayOfYear;
+            int daysInMonth = lastIntDayOfMonth - firstIntDayOfMonth;
+            */
+
+
+
+            float returnValue = 0;
+            for (int i = 0; i < daysInPeriod; i++)
+            {
+                returnValue += actYearValues[i + firstDayOfPeriod.DayOfYear];
+            }
+
+            return returnValue;
+        }
+
+
+            #region Region ActualizeWeekSeries
+            private static ISeries[] ActualizeWeekSeries(DateTime currentDate,
                                             ref float[] actYearValues,
                                             ref float[] actYear_minus_1_Values,
                                             ref float[] actYear_minus_2_Values,
@@ -261,7 +718,7 @@ namespace BarChartMauiLiveCharts
                     //Values = new [] { 4, 4, 7, 2, 8, 4, 3 },               
                     Values = actWeek_Year_Minus_3_ColumnSeries.Values,
                     //Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 4 }, // mark
-                    MaxBarWidth = 10, // mark
+                    MaxBarWidth = 15, // mark
                     Padding = 1,
                     Stroke = null,
                     Fill = new SolidColorPaint(SKColors.Yellow) { },
@@ -270,7 +727,7 @@ namespace BarChartMauiLiveCharts
                 new ColumnSeries<int>
                 {
                     Values = actWeek_Year_Minus_2_ColumnSeries.Values,
-                    MaxBarWidth = 10, // mark
+                    MaxBarWidth = 15, // mark
                     Padding = 1,
                     Fill = new SolidColorPaint(SKColors.Green),
 
@@ -278,14 +735,14 @@ namespace BarChartMauiLiveCharts
                 new ColumnSeries<int>
                 {
                     Values = actWeek_Year_Minus_1_ColumnSeries.Values,
-                    MaxBarWidth = 10, // mark
+                    MaxBarWidth = 15, // mark
                     Padding = 1,
                     Fill = new SolidColorPaint(SKColors.Blue),
                 },
                 new ColumnSeries<int>
                 {
                     Values = actWeekColumnSeries.Values,
-                    MaxBarWidth = 10, // mark
+                    MaxBarWidth = 15, // mark
                     Padding = 1,
                     Fill = new SolidColorPaint(SKColors.Red),
                 }

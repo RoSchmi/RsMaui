@@ -15,15 +15,10 @@ public MainPage(MainPageViewModel theViewModel)
         InitializeComponent();
         BindingContext = theViewModel;
         vm = theViewModel;
-
-       
     }
 
     private void ResetButton_Clicked(object sender, EventArgs e)
     {
-       
     }
-
-   
 }
 
