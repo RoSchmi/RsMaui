@@ -40,13 +40,13 @@
 
                 <Grid Grid.Row="2" ColumnDefinitions="{Binding DisplayWidth}">
                     <VerticalStackLayout>
-                        <HorizontalStackLayout HorizontalOptions="Start">
-                            <Button Text="  Week  " Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40"  Command="{Binding SwitchToWeekDisplayCommand}"/>
-                            <Button Text="Months" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding SwitchToMonthsDisplayCommand}"/>
-                            <Button Text="Quarters" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding SwitchToQuartersDisplayCommand}"/>
-                            <Button Text="Years" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding SwitchToYearsDisplayCommand}"/>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="10" Padding="2">
+                            <Button Text="  Week  " Padding="10,10" Margin="0, 20, 0, 0" MaximumHeightRequest="40" HorizontalOptions="FillAndExpand" Command="{Binding SwitchToWeekDisplayCommand}"/>
+                            <Button Text="Months" Padding="10,10" Margin="0, 20, 0, 0" MaximumHeightRequest="40" HorizontalOptions="FillAndExpand" Command="{Binding SwitchToMonthsDisplayCommand}"/>
+                            <Button Text="Quarters" Padding="10,10" Margin="0, 20, 0, 0" MaximumHeightRequest="40" HorizontalOptions="FillAndExpand" Command="{Binding SwitchToQuartersDisplayCommand}"/>
+                            <Button Text="Years" Padding="10,10" Margin="0, 20, 0, 0" MaximumHeightRequest="40" HorizontalOptions="FillAndExpand" Command="{Binding SwitchToYearsDisplayCommand}"/>
                         </HorizontalStackLayout> 
-                        <HorizontalStackLayout HorizontalOptions="Start">
+                        <HorizontalStackLayout HorizontalOptions="Start" IsVisible="{Binding WeekGoButtonsVisible}">
                             <Button Text="Go Back" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding WeekShiftBackCommand}"/>
                             <Entry Text="{Binding DisplayTimeSpan}" Margin="10, 20, 0, 0" MaximumHeightRequest="40" IsReadOnly="True" FontAttributes="Bold" MinimumWidthRequest="180"/>
                             <Button Text="Go Forth" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding WeekShiftForeCommand}"/>

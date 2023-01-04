@@ -17,9 +17,6 @@ using System.Xml;
 
 namespace BarChartMauiLiveCharts
 {
-
-
-
     public partial class MainPageViewModel : ObservableObject
     {
 
@@ -92,6 +89,9 @@ namespace BarChartMauiLiveCharts
         #region Region Observable Properties
         [ObservableProperty]
         private static double widthFactor = 0.5;
+      
+        [ObservableProperty]
+        private static bool weekGoButtonsVisible = true;
 
         [ObservableProperty]
         //[NotifyPropertyChangedFor(nameof(TableWidth))]
@@ -113,9 +113,11 @@ namespace BarChartMauiLiveCharts
         {
             WeekSeries = ActualizeWeekSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
 
+            WidthFactor = 0.5;
+            WeekGoButtonsVisible = true;
+
             Series = WeekSeries;
 
-            WidthFactor = 0.5;
 
             XAxes = new Axis[]
             {
@@ -163,6 +165,7 @@ namespace BarChartMauiLiveCharts
             MonthsSeries = ActualizeMonthsSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
 
             WidthFactor = 0.7;
+            WeekGoButtonsVisible = false;
 
             Series = MonthsSeries;
 
@@ -190,6 +193,7 @@ namespace BarChartMauiLiveCharts
             QuartersSeries = ActualizeQuartersSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
 
             WidthFactor = 0.5;
+            WeekGoButtonsVisible = false;
 
             Series = QuartersSeries;
 
@@ -216,6 +220,7 @@ namespace BarChartMauiLiveCharts
             YearsSeries = ActualizeYearsSeries(DateTime.Today, ref actYearValues, ref actYear_minus_1_Values, ref actYear_minus_2_Values, ref actYear_minus_3_Values);
 
             WidthFactor = 0.5;
+            WeekGoButtonsVisible = false;
 
             Series = YearsSeries;
 
