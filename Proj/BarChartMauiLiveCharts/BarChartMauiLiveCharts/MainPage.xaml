@@ -16,7 +16,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView Orientation= "Vertical" VerticalScrollBarVisibility="Always">
-            <Grid RowDefinitions="Auto, Auto">
+            <Grid RowDefinitions="Auto, Auto, Auto">
                 <ScrollView Grid.Row="0"  Orientation= "Horizontal" HorizontalScrollBarVisibility="Always"  VerticalScrollBarVisibility="Never">
                     <Grid RowDefinitions="300, Auto" >
                         <Grid.ColumnDefinitions>
@@ -38,20 +38,20 @@
                     </Grid>
                 </ScrollView>
 
-                <Grid Grid.Row="1" ColumnDefinitions="{Binding DisplayWidth}">
+                <Grid Grid.Row="2" ColumnDefinitions="{Binding DisplayWidth}">
                     <VerticalStackLayout>
-                        <HorizontalStackLayout   HorizontalOptions="Center">
-                            <Button Text="Week" Padding="10,10" Margin="20" MaximumHeightRequest="40"  Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
-                            <Button Text="Months" Padding="10,10" Margin="20" MaximumHeightRequest="40" Command="{Binding SwitchToMonthsDisplayCommand}" HorizontalOptions="Center"/>
-                            <Button Text="Quarters" Padding="10,10" Margin="20" MaximumHeightRequest="40" Command="{Binding SwitchToQuartersDisplayCommand}" HorizontalOptions="Center"/>
-                            <Button Text="Years" Padding="10,10" Margin="20" MaximumHeightRequest="40" Command="{Binding SwitchToYearsDisplayCommand}" HorizontalOptions="Center"/>
+                        <HorizontalStackLayout HorizontalOptions="Start">
+                            <Button Text="  Week  " Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40"  Command="{Binding SwitchToWeekDisplayCommand}"/>
+                            <Button Text="Months" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding SwitchToMonthsDisplayCommand}"/>
+                            <Button Text="Quarters" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding SwitchToQuartersDisplayCommand}"/>
+                            <Button Text="Years" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding SwitchToYearsDisplayCommand}"/>
+                        </HorizontalStackLayout> 
+                        <HorizontalStackLayout HorizontalOptions="Start">
+                            <Button Text="Go Back" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding WeekShiftBackCommand}"/>
+                            <Entry Text="{Binding DisplayTimeSpan}" Margin="10, 20, 0, 0" MaximumHeightRequest="40" IsReadOnly="True" FontAttributes="Bold" MinimumWidthRequest="180"/>
+                            <Button Text="Go Forth" Padding="10,10" Margin="10, 20, 0, 0" MaximumHeightRequest="40" Command="{Binding WeekShiftForeCommand}"/>
                         </HorizontalStackLayout>
-                        <HorizontalStackLayout HorizontalOptions="Center">
-                            <Button Text="Go Back" Padding="20,1" Margin="20"  Command="{Binding WeekShiftBackCommand}" HorizontalOptions="Center"/>
-                            <Entry Text="{Binding DisplayTimeSpan}" Margin="20" MaximumHeightRequest="70" IsReadOnly="True" FontAttributes="Bold" MinimumWidthRequest="200"/>
-                            <Button Text="Go Forth" Padding="20,20" Margin="20" MaximumHeightRequest="70" Command="{Binding WeekShiftForeCommand}" HorizontalOptions="Center"/>
-                        </HorizontalStackLayout>
-                        <HorizontalStackLayout   HorizontalOptions="Center">
+                        <HorizontalStackLayout   HorizontalOptions="Start">
                             <Button Text="{Binding DisplayWidth}" Padding="20,20" Margin="20" Command="{Binding SwitchToWeekDisplayCommand}" HorizontalOptions="Center"/>
                             <Button Text="{Binding DisplayWidth}" Padding="20,20" Margin="20" HorizontalOptions="Center"/>
                             <Button  Padding="20,20" Margin="20" HorizontalOptions="Center">
