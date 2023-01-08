@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiTableViewExample.MainPage"
-             xmlns:local="clr-namespace:MauiTableViewExample">
+             xmlns:local="clr-namespace:MauiTableViewExample"
+             xmlns:viewmodel="clr-namespace:MauiTableViewExample"
+            x:DataType="viewmodel:MainPageViewModel">
 
     <ContentPage.BindingContext>
         <local:MainPageViewModel/>

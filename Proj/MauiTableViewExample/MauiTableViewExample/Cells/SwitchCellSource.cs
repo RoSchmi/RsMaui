@@ -39,14 +39,14 @@ namespace MauiTableViewExample.Cells
             if (this.names.Count > 0)
             {
                 section.Clear();
-                foreach (string account in this.names)
+                foreach (string itemName in this.names)
                 {
-                    SwitchCell switchCell = new SwitchCell { Text = account, On = false };
+                    SwitchCell switchCell = new SwitchCell { Text = itemName, On = false };
                     section.Add(switchCell);
-                    if (account != "")
+                    if (itemName != "")
                     {
                         ToggledEventArgs toggledEventArgs = new ToggledEventArgs(switchCell.On);
-                        switchCell.OnChanged += (object sender2, ToggledEventArgs e2) => OnSwitchCell_toggled(this, toggledEventArgs, account);
+                        switchCell.OnChanged += (object sender2, ToggledEventArgs e2) => OnSwitchCell_toggled(this, toggledEventArgs, itemName);
                         switchCell.Tapped += OnSwitchCell_Tapped;                     
                     }
                 }
@@ -58,7 +58,7 @@ namespace MauiTableViewExample.Cells
             int index = names.FindIndex(x => x == ((SwitchCell)sender).Text);
             if ((index == -1) || (index >= names.Count))
             {
-                throw new Exception("Account not found, this should not occur");
+                throw new Exception("ItemName not found, this should not occur");
             }
             SwitchCellSourceEventArgs eventArgs = new SwitchCellSourceEventArgs(
             namesStates[index] == true ? CellAction.delete : CellAction.select, ((SwitchCell)sender).Text);
@@ -66,21 +66,21 @@ namespace MauiTableViewExample.Cells
             OnSwitchCellSourceSend(this, eventArgs);
         }
 
-        public void OnSwitchCell_toggled(object sender, ToggledEventArgs toggledEventArgs, string account)
+        public void OnSwitchCell_toggled(object sender, ToggledEventArgs toggledEventArgs, string itemName)
         {
 
             int index = -1;
 
-            index = names.FindIndex(x => x == account);
+            index = names.FindIndex(x => x == itemName);
 
             if (index == -1)
             {
-                index = names.FindIndex(x => x == account + " (DEL)");
+                index = names.FindIndex(x => x == itemName + " (DEL)");
             }
 
             if ((index == -1) || (index >= names.Count))
             {
-                throw new Exception("Account not found, this should not occur");
+                throw new Exception("itemName not found, this should not occur");
             }
             if (namesStates[index] == false)
             {
@@ -89,14 +89,14 @@ namespace MauiTableViewExample.Cells
             }
             else
             {
-                if (names[index].Length == account.Length + 6)
+                if (names[index].Length == itemName.Length + 6)
                 {
                     names[index] = names[index].Substring(0, names[index].Length - 6);
                     ((SwitchCell)section[index]).Text = names[index];
                 }
             }
             SwitchCellSourceEventArgs eventArgs = new SwitchCellSourceEventArgs(
-            CellAction.leave, account);
+            CellAction.leave, itemName);
             namesStates[index] = !namesStates[index];
             OnSwitchCellSourceSend(this, eventArgs);
         }
@@ -125,12 +125,12 @@ namespace MauiTableViewExample.Cells
             public SwitchCellSource.CellAction Action
             { get; private set; }
 
-            public string Account
+            public string ItemName
             { get; private set; }
 
-            internal SwitchCellSourceEventArgs(CellAction pAction, string pAccount)
+            internal SwitchCellSourceEventArgs(CellAction pAction, string pItemName)
             {
-                this.Account = pAccount;
+                this.ItemName = pItemName;
                 this.Action = pAction;
             }
         }

@@ -20,15 +20,10 @@ namespace MauiTableViewExample.ViewModels
         [ObservableProperty]
         private TableRoot accountsTableRoot = new();
 
-
         public SettingsViewModel()
         {
             switchCellSource.SwitchCellSourceSend += SwitchCellSource_SwitchCellSourceSend;
         }
-
-        
-
-       
 
         private async void SwitchCellSource_SwitchCellSourceSend(SwitchCellSource sender, SwitchCellSource.SwitchCellSourceEventArgs e)
         {
@@ -36,7 +31,7 @@ namespace MauiTableViewExample.ViewModels
             {
                 case SwitchCellSource.CellAction.select:
                     {
-                        ActItem = e.Account;
+                        ActItem = e.ItemName;
 
                         if (names.Contains(ActItem))
                         {
@@ -44,29 +39,23 @@ namespace MauiTableViewExample.ViewModels
                         }
 
                         names.Remove(ActItem);
-                        names.Insert(0, ActItem);
-
-                        //AccountsTableRoot.Clear();
-                        //section1.Clear();
-                        //switchCellSource.SwitchCellSourceSend += SwitchCellSource_SwitchCellSourceSend;
-                        switchCellSource.Populate(names);
-                        //AccountsTableRoot.Add(section1); 
+                        names.Insert(0, ActItem);                      
+                        switchCellSource.Populate(names);                   
                     }
                     break;
 
                 case SwitchCellSource.CellAction.delete:
                     {
-                        var OkCancelResult = await Application.Current.MainPage.DisplayAlert("Alert", "Delete Credentials ?", "OK", "Cancel");
+                        var OkCancelResult = await Application.Current.MainPage.DisplayAlert("Alert", "Delete Item ?", "OK", "Cancel");
                         if (OkCancelResult == true)
                         {
+                            string theItem = "";
 
-                            string theAccount = "";
-
-                            if (e.Account != null)
+                            if (e.ItemName != null)
                             {
-                                if (e.Account.Length > 6)
+                                if (e.ItemName.Length > 6)
                                 {
-                                    theAccount = e.Account.Substring(0, e.Account.Length - 6);
+                                    theItem = e.ItemName.Substring(0, e.ItemName.Length - 6);
                                 }
                             }
                             try
@@ -79,22 +68,16 @@ namespace MauiTableViewExample.ViewModels
 #endif
                             }
 
-                            int index = names.FindIndex(x => x == e.Account);
+                            int index = names.FindIndex(x => x == e.ItemName);
 
                             if ((index < names.Count) && (index != -1))
                             {
                                 names.RemoveAt(index);
                             }
-                            //AccountsTableRoot.Clear();
-                            //section1.Clear();
+                            
                             switchCellSource.Populate(names);
                             ActItem = names.First();
-                            //AccountsTableRoot.Add(section1);
-
-
                         }
-
-
                     }
                     break;
 
