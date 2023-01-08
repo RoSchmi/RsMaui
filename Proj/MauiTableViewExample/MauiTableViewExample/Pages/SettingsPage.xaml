@@ -14,8 +14,8 @@
                 <Entry Text="{Binding ActItem}" IsReadOnly="True" FontAttributes="Bold" BackgroundColor="AliceBlue" TextColor="CornflowerBlue"/>
             </HorizontalStackLayout>
             <Label Text="Click on Cell moves it to the top and selects, with toggleSwitch activated the cell is deleted" Margin="0, 30, 0, 0" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center"/>
-            <ScrollView>
-                <Grid  HeightRequest="600">
+            <ScrollView VerticalScrollBarVisibility="Always">
+                <Grid  HeightRequest="300">
                     <TableView  BackgroundColor="Transparent" x:Name="TableViewAccounts">
                     </TableView>
                 </Grid>
