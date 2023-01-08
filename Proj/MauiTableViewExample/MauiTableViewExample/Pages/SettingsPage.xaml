@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiTableViewExample.Pages.SettingsPage"
+             xmlns:local="clr-namespace:MauiTableViewExample"
+             xmlns:viewmodel="clr-namespace:MauiTableViewExample.ViewModels"
+             x:DataType="viewmodel:SettingsViewModel"
+             Title="SettingsPage">
+    <ContentPage.Content>
+        <VerticalStackLayout>
+            <Button Text="AddTableViewItem" Command="{Binding Add_TableView_ItemCommand}" HorizontalOptions="Start" Margin="0, 10, 0, 0"/>
+            <HorizontalStackLayout>
+                <Label Text="Selected Item is: " HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Entry Text="{Binding ActItem}" IsReadOnly="True" FontAttributes="Bold" BackgroundColor="AliceBlue" TextColor="CornflowerBlue"/>
+            </HorizontalStackLayout>
+            <TableView  BackgroundColor="Transparent" x:Name="TableViewAccounts">
+            </TableView>
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

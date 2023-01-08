@@ -19,6 +19,7 @@ public partial class MainPage : ContentPage
     // xmlns:viewmodel="clr-namespace:MauiMvvmTest"
     // x:DataType="viewmodel:MainPageViewModel">
     // In 'MauiProgram.cs' References to MainPage and MainPageViewModel have to be added
+    // In AppShell.xaml.cs the navigation routes have to be registered
 
     MainPageViewModel theViewModel= null;
 
