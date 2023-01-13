@@ -30,8 +30,6 @@
             BorderWidth="2"
             BorderColor="Blue"
             HorizontalOptions="Start"/>
-            <!--  <CollectionView ItemsSource="{Binding MyDict}"> -->
-            <!-- <CollectionView ItemsSource="{Binding Path=MyDict.Keys}"> -->
         <CollectionView ItemsSource="{Binding Path=ItemCollection}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:SettingItems">
@@ -48,42 +46,8 @@
                             </Grid>
                         </Frame>
                     </Grid>
-
-
-
-
-                    <!--    <HorizontalStackLayout> -->
-                    <!--     <Label Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SettingsPageViewModel}}, Path=ItemCollection}"/> -->
-
-                    <!--
-                        <Label Text="{Binding Name}" Margin="10,0, 0, 0" VerticalOptions="Center"/>
-                        <Label Text="{Binding Description}" Margin="10,0, 0, 0" VerticalOptions="Center"/> -->
-                        
-                            <!--   <Label Text="{Binding .}" Margin="10,0, 0, 0" VerticalOptions="Center"/>  -->
-
-
-                            <!--  <Label Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SettingsPageViewModel}}, MyDict[Name]}" 
-                                         VerticalOptions="Center" Margin="10,0,0,0" Padding="5, 5"/> -->
-                        
-
-                        <!--
-                        <Entry Placeholder="Tablename" VerticalOptions="Center" Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ProfileDetailViewModel}}, Path=MyDict[DataSourceID]}" MinimumWidthRequest="200"/>   
-                         funktioniert  für  Itemssource: Itemcollection -->
-                    <!--
-                    </HorizontalStackLayout>
-                    -->
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <!-- 
-        <DataGrid x:Name="dg" ItemsSource="{Binding Asset.Partners}" AutoGenerateColumns="false">
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="Company" Binding="{Binding ?}"/>
-            <DataGridTextColumn Header="Operator" Binding="{Binding ?}"/>
-            <DataGridTextColumn Header="Interest" Binding="{Binding ?}"/>
-            <DataGridTextColumn Header="Type" Binding="{Binding ?}"/>
-        </DataGrid.Columns>
-    </DataGrid>
-        -->
     </VerticalStackLayout>
 </ContentPage>

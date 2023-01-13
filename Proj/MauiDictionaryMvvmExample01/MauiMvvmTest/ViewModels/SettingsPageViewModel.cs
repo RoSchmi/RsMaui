@@ -27,64 +27,35 @@ namespace MauiDictionaryMvvmExample01.ViewModels
         // Don't forget to register the viewmodel in 'MauiProgram.cs'
         // Don't forget to set the reference in 'SettingsPage.xaml.cs
 
-        public void ApplyQueryAttributes(IDictionary<string, object> query)
-        {
+        private SettingsProperties receivedSettingsProperties;
 
-            ReceivedSettingsProperties = query[query.Keys.First()] as SettingsProperties;
+        [ObservableProperty]
+        string settingsName;
 
-            ItemCollection = new();
-
-            foreach (KeyValuePair<string, string> member in ReceivedSettingsProperties.Properties)
-            {
-                ItemCollection.Add(new SettingItems() { Name = member.Key, Description = member.Value });
-            }
-
-            // At first I wanted to try Dictionary for holding the Settings Data but then I switched over to 'Observable Collection'
-            // Didn't delete it for now for some further test.
-
-            MyDict = new();
-
-            foreach (var item in ItemCollection)
-            {
-                MyDict.Add(new SettingItems() { Name = item.Name  , Description = item.Description }, item.Description);
-                int dummy56 = 1;
-            }
-
-            // Then I wanted to try this example from
-            // -https://stackoverflow.com/questions/36359631/wpf-mvvm-bind-dictionarystring-liststring-to-datagrid
-
-            // but didn't make further efforts since in Maui there is no DataGrid
-
-            var partners = new Dictionary<string, List<string>>
-        {
-            {"Company", new List<string> {"company1", "company2"}},
-            {"Operator", new List<string> {"false", "true"}},
-            {"Interest", new List<string> {"40%", "60%"}},
-            {"Type", new List<string> {"type1", "type2"}}
-        };
-            Asset = new Result("TestType", "TestName", partners);
-
-            int dummy24 = 1;
-
-        }
         [ObservableProperty]
         private SettingItems settingsItem;
-
-
-        [ObservableProperty]
-        private Result asset; 
-
-        [ObservableProperty]
-        private SettingsProperties receivedSettingsProperties;
 
         [ObservableProperty]
         private ObservableCollection<SettingItems> itemCollection;
 
-        [ObservableProperty]
-        private Dictionary<SettingItems, string> myDict;
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
 
-        [ObservableProperty]
-        string settingsName;
+            receivedSettingsProperties = query[query.Keys.First()] as SettingsProperties;
+
+            ItemCollection = new();
+
+            foreach (KeyValuePair<string, string> member in receivedSettingsProperties.Properties)
+            {
+                ItemCollection.Add(new SettingItems() { Name = member.Key, Description = member.Value });
+            }
+
+            
+            // ToDo: First I wanted to try this example from
+            // -https://stackoverflow.com/questions/36359631/wpf-mvvm-bind-dictionarystring-liststring-to-datagrid
+            // but didn't make further efforts since in Maui there is no DataGrid
+
+        }
 
         [RelayCommand]
         async Task GoBack()
