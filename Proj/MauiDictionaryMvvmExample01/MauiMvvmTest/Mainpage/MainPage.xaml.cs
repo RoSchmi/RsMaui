@@ -4,10 +4,10 @@
 // https://github.com/janguar/FirstMauiApp
 
 
-using MauiMvvmTest;
+using MauiDictionaryMvvmExample01;
 using System.Collections.ObjectModel;
 
-namespace MauiMvvmTest;
+namespace MauiDictionaryMvvmExample01;
 
 public partial class MainPage : ContentPage
 {

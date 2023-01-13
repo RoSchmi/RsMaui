@@ -8,6 +8,7 @@ public partial class MainPage : ContentPage
     // xmlns:viewmodel="clr-namespace:MauiTableViewExample"
     // x:DataType="viewmodel:MainPageViewModel">
     // In 'MauiProgram.cs' References to MainPage and MainPageViewModel have to be added
+    // In 'AppShell.xaml' the 'ShellContent' for each page has to be added 
     // In AppShell.xaml.cs the navigation routes have to be registered
 
     public MainPage()
