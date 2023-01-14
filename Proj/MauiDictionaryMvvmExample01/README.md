@@ -1,5 +1,4 @@
 ### MauiDictionaryMvvmExample01
 
-Navigation to a DetailPage and Binding of data received from the parent page to a XAML CollectionView 
-
-
+Navigate to a DetailPage, change Data and return changed Data to the parent page.
+Uses Binding of data received from the parent page to a XAML CollectionView 
