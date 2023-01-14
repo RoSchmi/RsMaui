@@ -41,7 +41,7 @@
                                     Grid.Column="1"
                                     Padding="10">
                                     <Label Style="{StaticResource LargeLabel}" Text="{Binding Name}" />
-                                    <Entry Text="{Binding Description}" BackgroundColor="LightGray"/>
+                                    <Entry Text="{Binding Content}" BackgroundColor="LightGray"/>
                                 </VerticalStackLayout>
                             </Grid>
                         </Frame>

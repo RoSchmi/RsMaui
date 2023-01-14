@@ -11,6 +11,8 @@ using Microsoft.Maui.Controls;
 using Microsoft.UI.Xaml.Controls;
 using MauiDictionaryMvvmExample01.Models;
 using System.Collections.ObjectModel;
+using MauiDictionaryMvvmExample01.Pages;
+
 
 namespace MauiDictionaryMvvmExample01.ViewModels
 {
@@ -27,7 +29,7 @@ namespace MauiDictionaryMvvmExample01.ViewModels
         // Don't forget to register the viewmodel in 'MauiProgram.cs'
         // Don't forget to set the reference in 'SettingsPage.xaml.cs
 
-        private SettingsProperties receivedSettingsProperties;
+        private SuitCaseProperties receivedSettingsProperties;
 
         [ObservableProperty]
         string settingsName;
@@ -41,13 +43,13 @@ namespace MauiDictionaryMvvmExample01.ViewModels
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
 
-            receivedSettingsProperties = query[query.Keys.First()] as SettingsProperties;
+            receivedSettingsProperties = query[query.Keys.First()] as SuitCaseProperties;
 
             ItemCollection = new();
 
-            foreach (KeyValuePair<string, string> member in receivedSettingsProperties.Properties)
+            foreach (KeyValuePair<string, string> property in receivedSettingsProperties.PropertiesDictionary)
             {
-                ItemCollection.Add(new SettingItems() { Name = member.Key, Description = member.Value });
+                ItemCollection.Add(new SettingItems() { Name = property.Key, Content = property.Value });
             }
 
             
@@ -60,7 +62,28 @@ namespace MauiDictionaryMvvmExample01.ViewModels
         [RelayCommand]
         async Task GoBack()
         {
-            await Shell.Current.GoToAsync("..");
+
+            Dictionary<string, string> properties = new Dictionary<string, string>();
+
+            foreach(SettingItems settingsItem in ItemCollection)
+            {
+                properties.Add(settingsItem.Name, settingsItem.Content);
+            }
+
+            SuitCaseProperties suitCaseProperties = new SuitCaseProperties();
+            suitCaseProperties.PropertiesDictionary = properties;
+
+
+            var navigationParameter = new Dictionary<string, object>();
+            navigationParameter.Add("FirstAndOnly", suitCaseProperties);
+
+            // await Shell.Current.GoToAsync("..");
+
+            //await Shell.Current.GoToAsync($"{nameof(MainPage)}", navigationParameter);
+
+            await Shell.Current.GoToAsync("..", navigationParameter);
+
+            //await Shell.Current.GoToAsync($"{nameof(SettingsPage)}", navigationParameter);
         } 
     }
 }

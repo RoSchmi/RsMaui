@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MauiDictionaryMvvmExample01.Models;
-public class SettingsProperties
+public class SuitCaseProperties
 
 {
     // must expose a parameter-less constructor
-    public SettingsProperties() { }
+    public SuitCaseProperties() { }
 
-    // The settings properties get wrapped in this Dictionary
-    public Dictionary<string, string> Properties { get; set; }
+    // The properties get wrapped in this 'SuitCase' Dictionary
+    public Dictionary<string, string> PropertiesDictionary { get; set; }
+
 }

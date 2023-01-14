@@ -9,11 +9,12 @@ using CommunityToolkit.Mvvm.Input;
 using MauiDictionaryMvvmExample01.Pages;
 using MauiDictionaryMvvmExample01.Models;
 using System.Collections;
-
+using Microsoft.Maui.Controls;
+using Microsoft.UI.Xaml.Controls;
 
 namespace MauiDictionaryMvvmExample01
 {
-    public partial class MainPageViewModel :  ObservableObject
+    public partial class MainPageViewModel :  ObservableObject, IQueryAttributable
     {
         public MainPageViewModel() 
         {
@@ -29,6 +30,16 @@ namespace MauiDictionaryMvvmExample01
 
         [ObservableProperty] // source generator
         private string counterCopy = "0";
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            // This comes back, evtl. changed from the Detail Page, use it to do what you want
+            
+            SuitCaseProperties changedSettingProperties = query[query.Keys.First()] as SuitCaseProperties;
+
+            int breakPoint67 = 1;
+        }
+
 
 
         [RelayCommand]
@@ -53,7 +64,7 @@ namespace MauiDictionaryMvvmExample01
         private void SayHello(string s)
         {
 
-            int dummy3 = 1;  // Do nothing
+            int breakPoint3 = 1;  // Do nothing
         }
 
         [RelayCommand]
@@ -66,33 +77,34 @@ namespace MauiDictionaryMvvmExample01
         [RelayCommand]
         private async void Tap(string s)
         {
-            string targetPage = nameof(SettingsPage);
-            string injectedParameter = s;
+            //string targetPage = nameof(SettingsPage);
+            //string injectedParameter = s;
 
             // As the ID we take a GUID
             // As the SettingsName we take 's' which comes from the bar which was tapped
             var ID = Guid.NewGuid().ToString();
-          
-            // Create an instance of Class SettingsProperties
-            // this contains a Dictionary with the settings (Names and Values)
-            var settingsProperties = new SettingsProperties()
+
+
+            // Create an instance of Class SuitCaseProperties
+            // SuitCaseProperties contains a Dictionary (PropertiesDictionary) with its content (Names and Values)
+            var suitCaseProperties = new SuitCaseProperties()
             {
-                // settings properties get wrapped in this inner Dictionary
-                Properties = new Dictionary<string, string>() {
+                // properties get wrapped in this inner Dictionary
+                
+                PropertiesDictionary = new Dictionary<string, string>() {
                     { "SettingsID", ID },
                     { "SettingsName", s },
                     { "SettingsProperty_1", "" },
-                    { "SettingsProperty_2", "" }
-                }
+                    { "SettingsProperty_2", "" }       
+                }       
             };
 
-
             // Passing Parameter from a Page to a DetailPage can be handled through strings and dictionaries
-            // So the class instance (containing the inner dictionary) is wrapped in another dictionary (here: 'navigationParameter')
+            // Here the class instance suitCaseProperties (containing the inner dictionary) is wrapped in another dictionary (here: 'navigationParameter')
             var navigationParameter = new Dictionary<string, object>
-            {
+            {            
                 // Only one member in the dictionary
-                { "FirstAndOnlyRow", settingsProperties}
+                { "FirstAndOnlyRow", suitCaseProperties}
             };
             
             // here we send a string ('s') and a dictionary

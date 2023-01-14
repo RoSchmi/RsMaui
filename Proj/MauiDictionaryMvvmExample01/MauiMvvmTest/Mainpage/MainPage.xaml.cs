@@ -28,8 +28,7 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         BindingContext = vm;
-        theViewModel= vm;
-        
+        theViewModel= vm;   
     }
 
     private void ResetButton_Clicked(object sender, EventArgs e)
@@ -48,7 +47,5 @@ public partial class MainPage : ContentPage
 
         SemanticScreenReader.Announce(CounterBtn.Text);
 	}
-
-    
 }
 
