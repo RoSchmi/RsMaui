@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiTypeDependentView.Pages.SettingsPage"
+             xmlns:viewmodel="clr-namespace:MauiTypeDependentView.ViewModels"
+             xmlns:model="clr-namespace:MauiTypeDependentView.Models"
+             xmlns:local="clr-namespace:DataTemplates"           
+             Title="SettingsPage"      
+             x:DataType="viewmodel:SettingsPageViewModel">
+
+    <ContentPage.Resources>
+        <DataTemplate x:Key="stringTypeTemplate">
+            <Grid Padding="10">
+                <Frame HeightRequest="100" Style="{StaticResource CardView}">
+                    <Grid>
+                        <HorizontalStackLayout VerticalOptions="Center" Grid.Column="0" Padding="5">
+                            <Label Text="{Binding Name}" TextColor="Green" FontAttributes="Bold" />
+                            <Label Text="{Binding StringValue}" Margin="20, 0, 0, 0" TextColor="Green" FontAttributes="Bold" />
+                            <Label Text="String" Margin="20, 0, 0, 0" FontSize="15"/>
+                <!-- 
+                <Label Grid.Column="1"
+                       Text="{Binding DateOfBirth, StringFormat='{0:d}'}"
+                       TextColor="Green" />
+                <Label Grid.Column="2"
+                       Text="{Binding Location}"
+                       TextColor="Green"
+                       HorizontalTextAlignment="End" /> -->
+                   </HorizontalStackLayout>
+                    </Grid>
+                </Frame>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="boolTypeTemplate">
+            <Grid Padding="10">
+            <Frame HeightRequest="100" Style="{StaticResource CardView}">
+            <Grid>
+                        <HorizontalStackLayout VerticalOptions="Center" Grid.Column="0" Padding="5">
+                            <Label Text="{Binding Name}" TextColor="Green" FontAttributes="Bold" />
+                            <CheckBox IsChecked="{Binding BoolValue}" Margin="20, 0, 0, 0"/>
+
+                    <!--  <Label Text="{Binding Name}"
+                       TextColor="Red"
+                       FontAttributes="Bold" Grid.Column="0"/> -->
+                            <Label Text="Bool" Margin="20, 0, 0, 0" FontSize="15" Grid.Column="1"/>
+                    <!--  <Label Grid.Column="1"
+                       Text="{Binding DateOfBirth, StringFormat='{0:d}'}"
+                       TextColor="Red" />
+                <Label Grid.Column="2"
+                       Text="{Binding Location}"
+                       TextColor="Red"
+                       HorizontalTextAlignment="End" /> -->
+                            </HorizontalStackLayout>
+                </Grid>
+                </Frame>
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="dateTypeTemplate">
+            <Grid Padding="10">
+                <Frame HeightRequest="100" Style="{StaticResource CardView}">
+                    <Grid>
+                        <HorizontalStackLayout VerticalOptions="Center" Grid.Column="0" Padding="5">
+                            <Label Text="{Binding Name}" TextColor="Green" FontAttributes="Bold" />
+                            <DatePicker Date="{Binding DateValue}" Margin="20, 0, 0, 0"/>
+
+                            <!--  <Label Text="{Binding Name}"
+                       TextColor="Red"
+                       FontAttributes="Bold" Grid.Column="0"/> -->
+                            <Label Text="Date" Margin="20, 0, 0, 0" FontSize="15" Grid.Column="1"/>
+                            <!--  <Label Grid.Column="1"
+                       Text="{Binding DateOfBirth, StringFormat='{0:d}'}"
+                       TextColor="Red" />
+                <Label Grid.Column="2"
+                       Text="{Binding Location}"
+                       TextColor="Red"
+                       HorizontalTextAlignment="End" /> -->
+                        </HorizontalStackLayout>
+                    </Grid>
+                </Frame>
+            </Grid>
+        </DataTemplate>
+
+        <local:TypeDataTemplateSelector x:Key="typeDataTemplateSelector"
+                                          StringTypeTemplate="{StaticResource stringTypeTemplate}"
+                                          BoolTypeTemplate="{StaticResource boolTypeTemplate}"
+                                          DateTypeTemplate="{StaticResource dateTypeTemplate}" />
+    </ContentPage.Resources>
+
+    <VerticalStackLayout>
+        <HorizontalStackLayout VerticalOptions="Center">
+            <Label 
+            Margin="10"	
+			FontSize="12"
+			HorizontalOptions="Center"
+			Text="This text was passed to this Detail-Page: "
+			VerticalOptions="Center"/>
+            <Label 
+            Margin="10"
+			FontAttributes="Bold"
+			FontSize="32"
+			HorizontalOptions="Start"
+			Text="{Binding SettingsName}"
+			VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <Button
+			Margin="10,10"
+			Command="{Binding GoBackCommand}"
+			Text="&lt;  Go Back"
+            BorderWidth="2"
+            BorderColor="Blue"
+            HorizontalOptions="Start"/>
+        <!--  <CollectionView ItemsSource="{Binding Path=ItemCollection}"> -->
+        <!-- <ItemTemplate="{StaticResource personDataTemplateSelector}" />  -->
+        <CollectionView x:Name="collectionView" ItemsSource="{Binding Path=ItemCollection}" ItemTemplate="{StaticResource typeDataTemplateSelector}"/>
+        <!--   <CollectionView.ItemTemplate    ="{StaticResource personDataTemplateSelector}" > -->
+
+        <!-- 
+                <DataTemplate x:DataType="viewmodel:SettingItem">
+                    <Grid Padding="5">
+                        <Frame HeightRequest="300" Style="{StaticResource CardView}">
+                            <Grid Padding="0" ColumnDefinitions="125,*">
+                                <VerticalStackLayout
+                                    
+                                    <Entry Text="{Binding Name}" />
+                                    <Entry Text="{Binding StringValue}" />
+                                    <DatePicker  Date="{Binding DateValue}"/>
+                                    <CheckBox IsChecked="{Binding BoolValue}"/>   
+
+                <Label Style="{StaticResource LargeLabel}" Text="{Binding Name}" />
+                <Entry Text="{Binding Content}" BackgroundColor="LightGray"/> 
+                                </VerticalStackLayout>
+                            </Grid>  
+                        </Frame>
+                    </Grid>
+                </DataTemplate> -->
+
+        <!--
+        </CollectionView> -->
+    </VerticalStackLayout>
+</ContentPage>

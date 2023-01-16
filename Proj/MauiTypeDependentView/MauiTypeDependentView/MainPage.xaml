@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiTypeDependentView.MainPage"
+             xmlns:viewmodel="clr-namespace:MauiTypeDependentView"
+             x:DataType="viewmodel:MainPageViewModel">
+             
+             
+            
+
+
+    <!-- RoSchmi: For MVVM in .xaml has to be included:            
+             xmlns:viewmodel="clr-namespace:MauiMvvmTest"
+             x:DataType="viewmodel:MainPageViewModel">
+             In 'MauiProgram.cs' References to MainPage and MainPageViewModel have to be added
+    -->
+    <ScrollView>
+        <Grid 
+        RowDefinitions= "300, Auto, 600">
+            <ScrollView Grid.Row="0">
+                <VerticalStackLayout        
+            Spacing="2"
+            Padding="10,10"
+            VerticalOptions="Start">
+                    <Image
+                Source="dotnet_bot.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                HeightRequest="100"
+                HorizontalOptions="Center" />
+
+                    <Label
+                Text="Welcome to .NET Multi-platform App UI"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="14"
+                HorizontalOptions="Center" />
+                    <Label
+                Text="Shows MVVM-Pattern and Code-behind-Pattern"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="14"
+                HorizontalOptions="Center" />
+                    <HorizontalStackLayout >
+                        <Label  Text="Code-behind Pattern" MinimumWidthRequest="200" HorizontalTextAlignment="Start"/>
+                        <Button
+                    x:Name="CounterBtn"
+                    Text=" Click me "
+                    Padding="10,10"
+                    Margin="10,0,0,0"
+                    WidthRequest="150"
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    Clicked="OnCounterClicked"
+                    HorizontalOptions="End" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout >
+                        <Label  Text="Command-Pattern (click)" WidthRequest="200" HorizontalTextAlignment="Start"/>
+                        <Button Text="{Binding CounterCopy}"  
+                    Command="{Binding  IncrementContentCommand}" 
+                    WidthRequest="150"
+                    Padding="10,10"
+                    Margin="10,0,0,0" 
+                    HorizontalOptions="End"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout >
+                        <Label  Text="Code-behind-Pattern" WidthRequest="200" HorizontalTextAlignment="Start"/>
+                        <Button x:Name="ResetButton" 
+                    Text=" Reset to 0 "  
+                    Clicked="ResetButton_Clicked"
+                    WidthRequest="150"
+                    Padding="10,10"
+                    Margin="10,0,0,0" 
+                    HorizontalOptions="End"/>
+                    </HorizontalStackLayout>
+
+
+                </VerticalStackLayout>
+            </ScrollView>
+            <ScrollView Grid.Row= "1">
+                <VerticalStackLayout
+                Spacing="5"
+                Padding="20,20"
+                VerticalOptions="Start">
+                    <Label Text="********************" HorizontalOptions="Center"/>
+                    <Label Text="Enter a name for a set of Settings," Margin="5, 20, 0, 0"  FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <Label Text="then Tap on the appearing Bar to produce a named Settings-Set" Margin="5, 0, 0, 20" FontAttributes="Bold" HorizontalOptions="Start"/>
+                    <HorizontalStackLayout Margin="0,0,0,10">
+                        <Entry Placeholder="Enter Arbitrary Settings Name" HorizontalOptions="StartAndExpand" Text="{Binding ItemText}" WidthRequest="250" />
+                        <Button Text=" Add " Command="{Binding AddCommand}" Margin="10,0,0,0"/>
+                    </HorizontalStackLayout>
+                    <Label Text="*******************" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </ScrollView >
+            <ScrollView Grid.Row="2">
+                <VerticalStackLayout >
+                    <CollectionView  ItemsSource="{Binding Items}" BackgroundColor= "Black" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView  BackgroundColor="#0F0F0F">
+                                    <SwipeView.LeftItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="SayHello" 
+                                               BackgroundColor="Green"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, 
+                                               Path=SayHelloCommand}"
+                                               CommandParameter="{Binding .}"></SwipeItem>
+                                            <SwipeItem Text="Delete" 
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, 
+                                               Path=RemoveCommand}"
+                                               CommandParameter="{Binding .}"></SwipeItem>
+                                        </SwipeItems>
+                                    </SwipeView.LeftItems>
+                                    <Grid Padding="0,5">
+                                        <Frame>
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer NumberOfTapsRequired="1"  
+                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, 
+                                                               Path=TapCommand}"
+                                                               CommandParameter="{Binding .}" />
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="{Binding .}" FontSize="24"/>
+                                        </Frame>
+                                    </Grid>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Label Text="" Margin="0,200,0,0"/>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </ScrollView>
+</ContentPage>
