@@ -15,7 +15,7 @@
                     <Grid>
                         <HorizontalStackLayout VerticalOptions="Center" Grid.Column="0" Padding="5">
                             <Label Text="{Binding Name}" TextColor="Green" FontAttributes="Bold" />
-                            <Label Text="{Binding StringValue}" Margin="20, 0, 0, 0" TextColor="Green" FontAttributes="Bold" />
+                            <Entry Text="{Binding StringValue}" Margin="20, 0, 0, 0" TextColor="Green" FontAttributes="Bold" />
                             <Label Text="String" Margin="20, 0, 0, 0" FontSize="15"/>
                 <!-- 
                 <Label Grid.Column="1"

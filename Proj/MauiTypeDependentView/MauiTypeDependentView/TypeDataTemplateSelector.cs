@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MauiTypeDependentView.Models;
 using MauiTypeDependentView.ViewModels;
+using System.Runtime.InteropServices;
 
 namespace DataTemplates
 {
@@ -21,28 +22,23 @@ namespace DataTemplates
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
-           // return ValidTemplate;
-
-          // var returnValue = ((SettingItem)item).ValueType == "RsString" ? StringTypeTemplate : BoolTypeTemplate;
-
-          //  string dataType = ((SettingItem)item).ValueType;
-
             var returnTemplate = StringTypeTemplate;
 
-            switch (((SettingItem)item).ValueType)
+            switch (((SettingItem)item).TypeIdentifier)
+            
             {
-                case "RsBoolean":
-                    {
+                case SettingItem.TypeID.RsBoolean: 
+                {
                         returnTemplate = BoolTypeTemplate;
                     }
                     break;
 
-                case "RsDateTime":
+                case SettingItem.TypeID.RsDateTime:
                     {
                         returnTemplate = DateTypeTemplate;
                     }
                     break;
-                case "RsString":
+                case SettingItem.TypeID.RsString:
                     {
                         returnTemplate = StringTypeTemplate;
                     }

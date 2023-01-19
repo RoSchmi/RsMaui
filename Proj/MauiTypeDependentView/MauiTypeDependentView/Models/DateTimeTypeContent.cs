@@ -10,6 +10,6 @@ namespace MauiTypeDependentView.ViewModels
     public partial class DateTimeTypeContent : ObservableObject
     {
         [ObservableProperty]
-        private DateTime value; // { get; set; }
+        private DateTime? value; // { get; set; }
     }
 }
