@@ -92,7 +92,7 @@
             </ScrollView >
             <ScrollView Grid.Row="2">
                 <VerticalStackLayout >
-                    <CollectionView  ItemsSource="{Binding Items}" BackgroundColor= "Black" SelectionMode="None">
+                    <CollectionView  ItemsSource="{Binding ItemNames}" BackgroundColor= "Black" SelectionMode="None">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <SwipeView  BackgroundColor="#0F0F0F">

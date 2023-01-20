@@ -21,17 +21,17 @@ namespace MauiTypeDependentView
     {
         public MainPageViewModel()
         {
-            Items = new ObservableCollection<string>();
+            ItemNames = new ObservableCollection<string>();
         }
 
         //public Dictionary<string, object> ItemDescriptions = new Dictionary<string, object>();
         public Dictionary<string, SuitCaseProperties> ItemDescriptions = new Dictionary<string, SuitCaseProperties>();
 
         [ObservableProperty] // source generator
-        private ObservableCollection<string> items;
+        private ObservableCollection<string> itemNames;
 
         [ObservableProperty]
-        private ObservableCollection<SettingItem> itemCollection;
+        private ObservableCollection<WorkItem> workItemCollection;
 
 
         [ObservableProperty] // source generator
@@ -46,36 +46,36 @@ namespace MauiTypeDependentView
 
             SuitCaseProperties receivedTransportProperties = query[query.Keys.First()] as SuitCaseProperties;
 
-            ItemCollection = Wrapper.TransportItemsToSettingItems(receivedTransportProperties.PropertiesDictionary);
+            WorkItemCollection = Wrapper.TransportItemsToWorkItems(receivedTransportProperties.PropertiesDictionary);
          
-            // Get new name out of the collection of SettingItems (it can be that the name was changed)
-            string newName = ItemCollection.FirstOrDefault(x => x.Name == "SettingsName").StringValue as string;
+            // Get new name out of the collection of WorkItems (it can be that the name was changed)
+            string newName = WorkItemCollection.FirstOrDefault(x => x.Name == "SettingsName").StringValue as string;
             // the old name, it's the key
             string oldName = query.Keys.First();
 
 
            
-            if (!Items.Contains(newName))
+            if (!ItemNames.Contains(newName))
             {         
                 ItemDescriptions.Add(newName, receivedTransportProperties);
 
                 ItemDescriptions.Remove(oldName);
 
-                if (Items.Contains(oldName))
+                if (ItemNames.Contains(oldName))
                 {
                     // Don't know why I had to create a new Items observable collection
                     // The outcommented code below did not work, threw an exception
 
-                    List<string> itemList = Items.ToList<string>();
+                    List<string> itemList = ItemNames.ToList<string>();
                     itemList[itemList.IndexOf(oldName)] = newName;
                     
-                    Items = new ObservableCollection<string>();
+                    ItemNames = new ObservableCollection<string>();
                     foreach(var item in itemList)
                     {
-                        Items.Add(item);
+                        ItemNames.Add(item);
                     }
           
-                    //  Items[Items.IndexOf(oldName)] = newName;
+                    //  ItemNames[ItemNames.IndexOf(oldName)] = newName;
                 }            
             }
             else
@@ -96,9 +96,9 @@ namespace MauiTypeDependentView
                 return;
 
             // Adding twice the same name is not allowed
-            if (!Items.Contains(itemText))
+            if (!ItemNames.Contains(itemText))
             {
-                Items.Add(itemText);
+                ItemNames.Add(itemText);
             }
             ItemText = string.Empty;
         }
@@ -121,9 +121,9 @@ namespace MauiTypeDependentView
         [RelayCommand]
         private void Remove(string s)
         {
-            if (Items.Contains(s))
+            if (ItemNames.Contains(s))
             {
-                Items.Remove(s);
+                ItemNames.Remove(s);
             }
 
             if (ItemDescriptions.ContainsKey(s))
@@ -148,10 +148,10 @@ namespace MauiTypeDependentView
                 // properties get wrapped in this inner Dictionary
                
                 PropertiesDictionary = new Dictionary<string, TransportItem>() {
-                    { "SettingsID", new TransportItem() { Name = "SettingsID", TypeIdentifier = SettingItem.TypeID.RsStringRo, Content = new StringTypeContent() { Value = ID } } },
-                    { "SettingsName", new TransportItem() { Name = "SettingsName", TypeIdentifier = SettingItem.TypeID.RsString, Content = new StringTypeContent() { Value = s } } },
-                    { "SettingsState", new TransportItem() { Name = "SettingsState", TypeIdentifier = SettingItem.TypeID.RsBoolean, Content = new BoolTypeContent() { Value = null } } },
-                    { "SettingsDate", new TransportItem() { Name = "SettingsDate", TypeIdentifier = SettingItem.TypeID.RsDateTime, Content = new DateTimeTypeContent() { Value = null } } },
+                    { "SettingsID", new TransportItem() { Name = "SettingsID", TypeIdentifier = WorkItem.TypeID.RsStringRo, Content = new StringTypeContent() { Value = ID } } },
+                    { "SettingsName", new TransportItem() { Name = "SettingsName", TypeIdentifier = WorkItem.TypeID.RsString, Content = new StringTypeContent() { Value = s } } },
+                    { "SettingsState", new TransportItem() { Name = "SettingsState", TypeIdentifier = WorkItem.TypeID.RsBoolean, Content = new BoolTypeContent() { Value = null } } },
+                    { "SettingsDate", new TransportItem() { Name = "SettingsDate", TypeIdentifier = WorkItem.TypeID.RsDateTime, Content = new DateTimeTypeContent() { Value = null } } },
                 }
             };
 

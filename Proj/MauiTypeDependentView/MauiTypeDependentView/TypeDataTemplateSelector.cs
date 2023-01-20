@@ -10,7 +10,6 @@ using System.Runtime.InteropServices;
 
 namespace DataTemplates
 {
-    
     public class TypeDataTemplateSelector : Microsoft.Maui.Controls.DataTemplateSelector
     {
         public DataTemplate StringTypeTemplate { get; set; }
@@ -26,27 +25,27 @@ namespace DataTemplates
         {
             var returnTemplate = StringTypeTemplate;
 
-            switch (((SettingItem)item).TypeIdentifier) 
+            switch (((WorkItem)item).TypeIdentifier) 
             {
-                case SettingItem.TypeID.RsBoolean: 
+                case WorkItem.TypeID.RsBoolean: 
                 {
                         returnTemplate = BoolTypeTemplate;
                     }
                     break;
 
-                case SettingItem.TypeID.RsDateTime:
+                case WorkItem.TypeID.RsDateTime:
                     {
                         returnTemplate = DateTypeTemplate;
                     }
                     break;
 
-                case SettingItem.TypeID.RsStringRo:
+                case WorkItem.TypeID.RsStringRo:
                     {
                         returnTemplate = StringTypeReadOnlyTemplate;
                     }
                     break;
 
-                case SettingItem.TypeID.RsString:
+                case WorkItem.TypeID.RsString:
                     {
                         returnTemplate = StringTypeTemplate;
                     }

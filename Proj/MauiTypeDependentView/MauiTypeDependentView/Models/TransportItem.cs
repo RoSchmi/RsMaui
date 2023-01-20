@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static MauiTypeDependentView.Models.SettingItem;
+using static MauiTypeDependentView.Models.WorkItem;
 
 namespace Common.Models
 {

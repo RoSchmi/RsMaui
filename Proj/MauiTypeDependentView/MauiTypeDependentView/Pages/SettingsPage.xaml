@@ -134,13 +134,13 @@
             BorderWidth="2"
             BorderColor="Blue"
             HorizontalOptions="Start"/>
-        <!--  <CollectionView ItemsSource="{Binding Path=ItemCollection}"> -->
+        <!--  <CollectionView ItemsSource="{Binding Path=WorkItemCollection}"> -->
         <!-- <ItemTemplate="{StaticResource personDataTemplateSelector}" />  -->
-        <CollectionView x:Name="collectionView" ItemsSource="{Binding Path=ItemCollection}" ItemTemplate="{StaticResource typeDataTemplateSelector}"/>
+        <CollectionView x:Name="collectionView" ItemsSource="{Binding Path=WorkItemCollection}" ItemTemplate="{StaticResource typeDataTemplateSelector}"/>
         <!--   <CollectionView.ItemTemplate    ="{StaticResource personDataTemplateSelector}" > -->
 
         <!-- 
-                <DataTemplate x:DataType="viewmodel:SettingItem">
+                <DataTemplate x:DataType="viewmodel:WorkItem">
                     <Grid Padding="5">
                         <Frame HeightRequest="300" Style="{StaticResource CardView}">
                             <Grid Padding="0" ColumnDefinitions="125,*">

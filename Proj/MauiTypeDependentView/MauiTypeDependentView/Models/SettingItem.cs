@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MauiTypeDependentView.Models
 {
-    public class SettingItem
+    public class WorkItem
     {
-        public SettingItem() { }
+        public WorkItem() { }
 
         public  enum TypeID
         {

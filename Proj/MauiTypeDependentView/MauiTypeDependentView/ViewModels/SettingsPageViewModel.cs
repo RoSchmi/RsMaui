@@ -41,50 +41,19 @@ namespace MauiTypeDependentView.ViewModels
         [ObservableProperty]
         string settingsName;
 
-        [ObservableProperty]
-        private SettingItem settingsItem;
+        //[ObservableProperty]
+        //private WorkItem settingsItem;
 
         [ObservableProperty]
-        private ObservableCollection<SettingItem> itemCollection;
+        private ObservableCollection<WorkItem> workItemCollection;
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-
             receivedTransportProperties = query[query.Keys.First()] as SuitCaseProperties;
 
-            ItemCollection = new();
+            WorkItemCollection = Wrapper.TransportItemsToWorkItems(receivedTransportProperties.PropertiesDictionary);
 
-            ItemCollection = Wrapper.TransportItemsToSettingItems(receivedTransportProperties.PropertiesDictionary);
-
-            /*
-     
-                foreach (KeyValuePair<string, TransportItem> property in receivedTransportProperties.PropertiesDictionary)
-                {
-                switch (property.Value.TypeIdentifier)
-                {
-                    case SettingItem.TypeID.RsString:
-                    case SettingItem.TypeID.RsStringRo:
-                        {
-                            ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, StringValue = ((StringTypeContent)property.Value.Content).Value });
-                            break;
-                        }
-                  
-                    case SettingItem.TypeID.RsBoolean:
-                        {
-                            ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, BoolValue = ((BoolTypeContent)property.Value.Content).Value });
-                            break;
-                        }
-
-                    case SettingItem.TypeID.RsDateTime:
-                        {
-                            ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, DateValue = ((DateTimeTypeContent)property.Value.Content).Value });
-                            break;
-                        }
-                }
-            }
-
-            */
-
+            
             // ToDo: First I wanted to try this example from
             // -https://stackoverflow.com/questions/36359631/wpf-mvvm-bind-dictionarystring-liststring-to-datagrid
             // but didn't make further efforts since in Maui there is no DataGrid
@@ -96,12 +65,12 @@ namespace MauiTypeDependentView.ViewModels
         {
             // Create a dictionary with TransportItems to hold all the Settings belonging to the selected SettingsName / SettingsID
             
-            Dictionary<string, TransportItem> TransportItemDictionary = Wrapper.SettingItemsToTransportItems(ItemCollection);
+            Dictionary<string, TransportItem> TransportItemDictionary = Wrapper.WorkItemsToTransportItems(WorkItemCollection);
       
             SuitCaseProperties suitCaseProperties = new SuitCaseProperties() { PropertiesDictionary = TransportItemDictionary };
             
-            // Get name out of the collection of SettingItems (it can be that the name was changed)
-            var newName = ItemCollection.FirstOrDefault(x => x.Name == "SettingsName").StringValue;
+            // Get name out of the collection of WorkItems (it can be that the name was changed)
+            var newName = WorkItemCollection.FirstOrDefault(x => x.Name == "SettingsName").StringValue;
 
             var navigationParameter = new Dictionary<string, object>();
             // We have the old name as the key, may be that there is a changed name in the suitCaseProperties

@@ -17,33 +17,33 @@ namespace MauiTypeDependentView.Common
         public static int returnTheInput(int a)
         { return a; }
 
-        public static Dictionary<string, TransportItem> SettingItemsToTransportItems(ObservableCollection<SettingItem> pSettingItems)
+        public static Dictionary<string, TransportItem> WorkItemsToTransportItems(ObservableCollection<WorkItem> pWorkItems)
         {
             Dictionary<string, TransportItem> PropertiesDictionary = new Dictionary<string, TransportItem>();
 
-            // Add the TransportItems from the SettingItems
-            foreach (SettingItem settingItem in pSettingItems)
+            // Add the TransportItems from the WorkItems
+            foreach (WorkItem workItem in pWorkItems)
             {
-                switch (settingItem.TypeIdentifier)
+                switch (workItem.TypeIdentifier)
                 {
-                    case SettingItem.TypeID.RsString:
+                    case WorkItem.TypeID.RsString:
                         {
-                            PropertiesDictionary.Add(settingItem.Name, new TransportItem() { Name = settingItem.Name, TypeIdentifier = settingItem.TypeIdentifier, Content = new StringTypeContent() { Value = settingItem.StringValue } });
+                            PropertiesDictionary.Add(workItem.Name, new TransportItem() { Name = workItem.Name, TypeIdentifier = workItem.TypeIdentifier, Content = new StringTypeContent() { Value = workItem.StringValue } });
                             break;
                         }
-                    case SettingItem.TypeID.RsBoolean:
+                    case WorkItem.TypeID.RsBoolean:
                         {
-                            PropertiesDictionary.Add(settingItem.Name, new TransportItem() { Name = settingItem.Name, TypeIdentifier = settingItem.TypeIdentifier, Content = new BoolTypeContent() { Value = settingItem.BoolValue } });
+                            PropertiesDictionary.Add(workItem.Name, new TransportItem() { Name = workItem.Name, TypeIdentifier = workItem.TypeIdentifier, Content = new BoolTypeContent() { Value = workItem.BoolValue } });
                             break;
                         }
-                    case SettingItem.TypeID.RsDateTime:
+                    case WorkItem.TypeID.RsDateTime:
                         {
-                            PropertiesDictionary.Add(settingItem.Name, new TransportItem() { Name = settingItem.Name, TypeIdentifier = settingItem.TypeIdentifier, Content = new DateTimeTypeContent() { Value = settingItem.DateValue } });
+                            PropertiesDictionary.Add(workItem.Name, new TransportItem() { Name = workItem.Name, TypeIdentifier = workItem.TypeIdentifier, Content = new DateTimeTypeContent() { Value = workItem.DateValue } });
                             break;
                         }
                     default:
                         {
-                            PropertiesDictionary.Add(settingItem.Name, new TransportItem() { Name = settingItem.Name, TypeIdentifier = settingItem.TypeIdentifier, Content = new StringTypeContent() { Value = settingItem.StringValue } });
+                            PropertiesDictionary.Add(workItem.Name, new TransportItem() { Name = workItem.Name, TypeIdentifier = workItem.TypeIdentifier, Content = new StringTypeContent() { Value = workItem.StringValue } });
                             break;
                         }
                 }
@@ -53,30 +53,30 @@ namespace MauiTypeDependentView.Common
         }
 
         
-        public static ObservableCollection<SettingItem> TransportItemsToSettingItems(Dictionary<string, TransportItem> pTransportItems)
+        public static ObservableCollection<WorkItem> TransportItemsToWorkItems(Dictionary<string, TransportItem> pTransportItems)
         {
-            ObservableCollection<SettingItem> SettingPropertyCollection = new ObservableCollection<SettingItem>();
+            ObservableCollection<WorkItem> SettingPropertyCollection = new ObservableCollection<WorkItem>();
           
             foreach (KeyValuePair<string, TransportItem> property in pTransportItems)          
             {
                 switch (property.Value.TypeIdentifier)
                 {
-                    case SettingItem.TypeID.RsString:
-                    case SettingItem.TypeID.RsStringRo:
+                    case WorkItem.TypeID.RsString:
+                    case WorkItem.TypeID.RsStringRo:
                         {
-                            SettingPropertyCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, StringValue = ((StringTypeContent)property.Value.Content).Value });
+                            SettingPropertyCollection.Add(new WorkItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, StringValue = ((StringTypeContent)property.Value.Content).Value });
                             break;
                         }
 
-                    case SettingItem.TypeID.RsBoolean:
+                    case WorkItem.TypeID.RsBoolean:
                         {
-                            SettingPropertyCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, BoolValue = ((BoolTypeContent)property.Value.Content).Value });
+                            SettingPropertyCollection.Add(new WorkItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, BoolValue = ((BoolTypeContent)property.Value.Content).Value });
                             break;
                         }
 
-                    case SettingItem.TypeID.RsDateTime:
+                    case WorkItem.TypeID.RsDateTime:
                         {
-                            SettingPropertyCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, DateValue = ((DateTimeTypeContent)property.Value.Content).Value });
+                            SettingPropertyCollection.Add(new WorkItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, DateValue = ((DateTimeTypeContent)property.Value.Content).Value });
                             break;
                         }
                 }  
