@@ -30,6 +30,28 @@
                 </Frame>
             </Grid>
         </DataTemplate>
+        <DataTemplate x:Key="stringTypeReadOnlyTemplate">
+            <Grid Padding="10">
+                <Frame HeightRequest="100" Style="{StaticResource CardView}">
+                    <Grid>
+                        <HorizontalStackLayout VerticalOptions="Center" Grid.Column="0" Padding="5">
+                            <Label Text="{Binding Name}" TextColor="Green" FontAttributes="Bold" />
+                            <Entry Text="{Binding StringValue}" Margin="20, 0, 0, 0" TextColor="DarkGray" IsReadOnly="True" FontAttributes="Bold" />
+                            <Label Text="String" Margin="20, 0, 0, 0" FontSize="15"/>
+                            <!-- 
+                <Label Grid.Column="1"
+                       Text="{Binding DateOfBirth, StringFormat='{0:d}'}"
+                       TextColor="Green" />
+                <Label Grid.Column="2"
+                       Text="{Binding Location}"
+                       TextColor="Green"
+                       HorizontalTextAlignment="End" /> -->
+                        </HorizontalStackLayout>
+                    </Grid>
+                </Frame>
+            </Grid>
+        </DataTemplate>
+
 
         <DataTemplate x:Key="boolTypeTemplate">
             <Grid Padding="10">
@@ -83,6 +105,7 @@
 
         <local:TypeDataTemplateSelector x:Key="typeDataTemplateSelector"
                                           StringTypeTemplate="{StaticResource stringTypeTemplate}"
+                                          StringTypeReadOnlyTemplate="{StaticResource stringTypeReadOnlyTemplate}"
                                           BoolTypeTemplate="{StaticResource boolTypeTemplate}"
                                           DateTypeTemplate="{StaticResource dateTypeTemplate}" />
     </ContentPage.Resources>

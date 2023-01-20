@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//namespace MauiTypeDependentView.ViewModels
 namespace MauiTypeDependentView.Models
 {
     public class SettingItem
@@ -14,6 +13,7 @@ namespace MauiTypeDependentView.Models
         public  enum TypeID
         {
             RsString,
+            RsStringRo,
             RsBoolean,
             RsDateTime,
             RsTimeSpan,

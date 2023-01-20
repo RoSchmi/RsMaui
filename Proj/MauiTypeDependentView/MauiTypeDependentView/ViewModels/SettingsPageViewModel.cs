@@ -61,10 +61,18 @@ namespace MauiTypeDependentView.ViewModels
                 switch (property.Value.TypeIdentifier)
                 {
                     case SettingItem.TypeID.RsString:
+                    case SettingItem.TypeID.RsStringRo:
                         {
                             ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, StringValue = ((StringTypeContent)property.Value.Content).Value });
                             break;
                         }
+                        /*
+                    case SettingItem.TypeID.RsStringRo:
+                        {
+                            ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, StringValue = ((StringTypeContent)property.Value.Content).Value });
+                            break;
+                        }
+                        */
                     case SettingItem.TypeID.RsBoolean:
                         {
                             ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, BoolValue = ((BoolTypeContent)property.Value.Content).Value });

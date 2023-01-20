@@ -10,7 +10,7 @@ namespace MauiTypeDependentView.ViewModels
     public partial class BoolTypeContent : ObservableObject
     {
         [ObservableProperty]
-        private bool? value; //{ get; set; }
+        private bool? value; 
         
     }
 }

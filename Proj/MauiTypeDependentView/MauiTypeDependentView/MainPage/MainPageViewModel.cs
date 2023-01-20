@@ -12,7 +12,6 @@ using Common.Models;
 using System.Collections;
 using Microsoft.Maui.Controls;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.Extensions.Primitives;
 using MauiTypeDependentView.ViewModels;
 
 namespace MauiTypeDependentView
@@ -53,6 +52,7 @@ namespace MauiTypeDependentView
                 switch (property.Value.TypeIdentifier)
                 {
                     case SettingItem.TypeID.RsString:
+                    case SettingItem.TypeID.RsStringRo:
                         {
                             ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, StringValue = ((StringTypeContent)property.Value.Content).Value });
                             break;
@@ -71,13 +71,17 @@ namespace MauiTypeDependentView
             }
 
 
-            // Get name out of the collection of SettingItems (it can be that the name was changed)
+            // Get new name out of the collection of SettingItems (it can be that the name was changed)
             string newName = ItemCollection.FirstOrDefault(x => x.Name == "SettingsName").StringValue as string;
+            // the old name, it's the key
+            string oldName = query.Keys.First();
 
-            if (!ItemDescriptions.ContainsKey(newName))
-            {
-                var oldName = query.Keys.First();
+
+           
+            if (!Items.Contains(newName))
+            {         
                 ItemDescriptions.Add(newName, receivedTransportProperties);
+
                 ItemDescriptions.Remove(oldName);
 
                 if (Items.Contains(oldName))
@@ -87,20 +91,22 @@ namespace MauiTypeDependentView
 
                     List<string> itemList = Items.ToList<string>();
                     itemList[itemList.IndexOf(oldName)] = newName;
-                    //itemList.Remove(oldName);
+                    
                     Items = new ObservableCollection<string>();
                     foreach(var item in itemList)
                     {
                         Items.Add(item);
                     }
-                    
-
+          
                     //  Items[Items.IndexOf(oldName)] = newName;
                 }            
             }
             else
             {
-                ItemDescriptions[newName] = receivedTransportProperties;
+                if (oldName == newName)   // Don't allow changing of a name to a name which is already there
+                {
+                    ItemDescriptions[newName] = receivedTransportProperties;
+                }
             }
         }
 
@@ -139,7 +145,14 @@ namespace MauiTypeDependentView
         private void Remove(string s)
         {
             if (Items.Contains(s))
+            {
                 Items.Remove(s);
+            }
+
+            if (ItemDescriptions.ContainsKey(s))
+            {
+                ItemDescriptions.Remove(s);
+            }
         }
 
         [RelayCommand]
@@ -148,66 +161,29 @@ namespace MauiTypeDependentView
             //string targetPage = nameof(SettingsPage);
             //string injectedParameter = s;
 
-            // As the ID we take a GUID
+            // As the ID we take a GUID, is not used for now
             // As the SettingsName we take 's' which comes from the bar which was tapped
 
             var ID = Guid.NewGuid().ToString();
-
-
-            // Create an instance of Class SuitCaseProperties
-            // SuitCaseProperties contains a Dictionary (PropertiesDictionary) with its content (Names and Values)
-            /*
+           
             var suitCaseProperties = new SuitCaseProperties()
             {
                 // properties get wrapped in this inner Dictionary
-
-                PropertiesDictionary = new Dictionary<string, string>() {
-                    { "SettingsID", ID },
-                    { "SettingsName", s },
-                    { "SettingsProperty_1", "" },
-                    { "SettingsProperty_2", "" }
-                }
-            };
-            */
-
-            // Create an instance of Class SuitCaseProperties
-            // SuitCaseProperties contains a Dictionary (PropertiesDictionary) with its content (Names and Values)
-
-
-            /*
-            var suitCaseProperties = new SuitCaseProperties()
-            {
-                // properties get wrapped in this inner Dictionary
-
-                //PropertiesDictionary = new Dictionary<string, object>() {
-                    PropertiesDictionary = new Dictionary<string, SettingItem>() {
-                    { "SettingsID", new SettingItem() { Name = "SettingsID", TypeIdentifier = SettingItem.TypeID.RsString, Content = new StringTypeContent() { Value = ID } } },
-                    { "SettingsName", new SettingItem() { Name = "SettingsName", TypeIdentifier = SettingItem.TypeID.RsString, Content = new StringTypeContent() { Value = s } } },
-                    { "SettingsState", new SettingItem() { Name = "SettingsState", TypeIdentifier = SettingItem.TypeID.RsBoolean, Content = new BoolTypeContent() { Value = null } } },
-                    { "SettingsDate", new SettingItem() { Name = "SettingsDate", TypeIdentifier = SettingItem.TypeID.RsDateTime, Content = new DateTimeTypeContent() { Value = null } } },         
-                }
-            };
-            */
-            var suitCaseProperties = new SuitCaseProperties()
-            {
-                // properties get wrapped in this inner Dictionary
-
-                //PropertiesDictionary = new Dictionary<string, object>() {
+               
                 PropertiesDictionary = new Dictionary<string, TransportItem>() {
-                    { "SettingsID", new TransportItem() { Name = "SettingsID", TypeIdentifier = SettingItem.TypeID.RsString, Content = new StringTypeContent() { Value = ID } } },
+                    { "SettingsID", new TransportItem() { Name = "SettingsID", TypeIdentifier = SettingItem.TypeID.RsStringRo, Content = new StringTypeContent() { Value = ID } } },
                     { "SettingsName", new TransportItem() { Name = "SettingsName", TypeIdentifier = SettingItem.TypeID.RsString, Content = new StringTypeContent() { Value = s } } },
                     { "SettingsState", new TransportItem() { Name = "SettingsState", TypeIdentifier = SettingItem.TypeID.RsBoolean, Content = new BoolTypeContent() { Value = null } } },
                     { "SettingsDate", new TransportItem() { Name = "SettingsDate", TypeIdentifier = SettingItem.TypeID.RsDateTime, Content = new DateTimeTypeContent() { Value = null } } },
                 }
             };
 
-
             var navigationParameter = new Dictionary<string, object>();
-
 
             if (!ItemDescriptions.ContainsKey(s))
             {
                 ItemDescriptions.Add(s, suitCaseProperties);
+
                 navigationParameter = new Dictionary<string, object>() {
                     { s, suitCaseProperties }
                 };
@@ -216,24 +192,15 @@ namespace MauiTypeDependentView
             {
                 if (ItemDescriptions.ContainsKey(s))
                 {
-                    var theValue = ItemDescriptions[s] as SuitCaseProperties;
-                    // SuitCaseProperties theValue = new SuitCaseProperties() { PropertiesDictionary = ItemDescriptions[s]. as }
-
+                    var properties = ItemDescriptions[s] as SuitCaseProperties;
+                    
                     navigationParameter = new Dictionary<string, object>()
                     {
-                        { s, theValue }
+                        { s, properties }
                     };
                 }
                 // Passing Parameter from a Page to a DetailPage can be handled through strings and dictionaries
                 // Here the class instance suitCaseProperties (containing the inner dictionary) is wrapped in another dictionary (here: 'navigationParameter')
-
-                /*
-                var navigationParameter = new Dictionary<string, object>
-                {            
-                    // Only one member in the dictionary
-                    { "FirstAndOnlyRow", suitCaseProperties}
-                };
-                */
 
                 // here we send a string ('s') and a dictionary
                 await Shell.Current.GoToAsync($"{nameof(SettingsPage)}?Parameter={s}", navigationParameter);

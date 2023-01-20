@@ -10,6 +10,6 @@ namespace MauiTypeDependentView.ViewModels
     public partial class StringTypeContent : ObservableObject
     {
         [ObservableProperty]
-        private string value; // { get; set; }
+        private string value; 
     }
 }

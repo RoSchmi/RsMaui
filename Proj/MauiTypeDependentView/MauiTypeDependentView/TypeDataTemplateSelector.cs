@@ -15,6 +15,8 @@ namespace DataTemplates
     {
         public DataTemplate StringTypeTemplate { get; set; }
 
+        public DataTemplate StringTypeReadOnlyTemplate { get; set; }
+
         public DataTemplate BoolTypeTemplate { get; set; }
 
         public DataTemplate DateTypeTemplate { get; set; }
@@ -24,8 +26,7 @@ namespace DataTemplates
         {
             var returnTemplate = StringTypeTemplate;
 
-            switch (((SettingItem)item).TypeIdentifier)
-            
+            switch (((SettingItem)item).TypeIdentifier) 
             {
                 case SettingItem.TypeID.RsBoolean: 
                 {
@@ -38,11 +39,19 @@ namespace DataTemplates
                         returnTemplate = DateTypeTemplate;
                     }
                     break;
+
+                case SettingItem.TypeID.RsStringRo:
+                    {
+                        returnTemplate = StringTypeReadOnlyTemplate;
+                    }
+                    break;
+
                 case SettingItem.TypeID.RsString:
                     {
                         returnTemplate = StringTypeTemplate;
                     }
                     break;
+
                 default:
                     {
                         returnTemplate = StringTypeTemplate;
@@ -50,13 +59,8 @@ namespace DataTemplates
                     break;
             }
 
-            return returnTemplate;
-            /*
-            ItemCollection.
-            return ((Person)item).DateOfBirth.Year >= 1980 ? ValidTemplate : InvalidTemplate;
-            */
-        }
-        
+            return returnTemplate;         
+        }    
     }
     
 }
