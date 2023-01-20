@@ -32,7 +32,6 @@ namespace MauiTypeDependentView.Models
         public bool? BoolValue { get; set; }
 
         // Add other types if needed
-        // e.g. public TimeSpan TimeSpanValue { get; set; }
-        //public object Content { get; set; }
+        // e.g. public TimeSpan TimeSpanValue { get; set; }      
     }
 }

@@ -13,6 +13,7 @@ using System.Collections;
 using Microsoft.Maui.Controls;
 using Microsoft.UI.Xaml.Controls;
 using MauiTypeDependentView.ViewModels;
+using MauiTypeDependentView.Common;
 
 namespace MauiTypeDependentView
 {
@@ -45,32 +46,8 @@ namespace MauiTypeDependentView
 
             SuitCaseProperties receivedTransportProperties = query[query.Keys.First()] as SuitCaseProperties;
 
-            ItemCollection = new();
-
-            foreach (KeyValuePair<string, TransportItem> property in receivedTransportProperties.PropertiesDictionary)
-            {
-                switch (property.Value.TypeIdentifier)
-                {
-                    case SettingItem.TypeID.RsString:
-                    case SettingItem.TypeID.RsStringRo:
-                        {
-                            ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, StringValue = ((StringTypeContent)property.Value.Content).Value });
-                            break;
-                        }
-                    case SettingItem.TypeID.RsBoolean:
-                        {
-                            ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, BoolValue = ((BoolTypeContent)property.Value.Content).Value });
-                            break;
-                        }
-                    case SettingItem.TypeID.RsDateTime:
-                        {
-                            ItemCollection.Add(new SettingItem() { Name = property.Value.Name, TypeIdentifier = property.Value.TypeIdentifier, DateValue = ((DateTimeTypeContent)property.Value.Content).Value });
-                            break;
-                        }
-                }
-            }
-
-
+            ItemCollection = Wrapper.TransportItemsToSettingItems(receivedTransportProperties.PropertiesDictionary);
+         
             // Get new name out of the collection of SettingItems (it can be that the name was changed)
             string newName = ItemCollection.FirstOrDefault(x => x.Name == "SettingsName").StringValue as string;
             // the old name, it's the key
