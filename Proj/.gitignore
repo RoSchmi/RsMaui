@@ -22,6 +22,9 @@
 !/MauiTypeDependentView/
 !/MauiTypeDependentView/**
 
+!/MauiPages/
+!/MauiPages/**
+
 
 
 
