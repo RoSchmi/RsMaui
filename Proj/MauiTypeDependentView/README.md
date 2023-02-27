@@ -6,5 +6,8 @@ and displays diefferent dataTypes with different controls (for string, bool, dat
 
 ![Gallery](https://github.com/RoSchmi/RsMaui/blob/master/Proj/MauiTypeDependentView/Pictures/MauiTypeDependentView_1.png)
 
+
+
+
 ![Gallery](https://github.com/RoSchmi/RsMaui/blob/master/Proj/MauiTypeDependentView/Pictures/MauiTypeDependentView_2.png)
 
