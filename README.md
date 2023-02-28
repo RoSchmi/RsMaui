@@ -27,6 +27,11 @@ These examples are from: https://github.com/codingdroplets/MauiPages
 Watch Tutorial Video: https://www.youtube.com/watch?v=G_vktKfMU20
 
 The examples show some kinds of navigation (ContentPage, NavigationPage, FlyoutPage, TabbedPage)
-Change the App.xaml.cs to see the different solutions.
+Change the App.xaml.cs to see the different solutions. For FlyoutPage better see project 'FlyoutPageNavigation'
+
+### FlyoutPageNavigation
+This is an adaption of the example from here: https://learn.microsoft.com/en-us/dotnet/maui/user-interface/pages/flyoutpage?view=net-maui-7.0
+It shows FlyoutPageNavigation which is not compatible with Shell-Naviagation
+
  
 

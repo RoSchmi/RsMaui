@@ -1,5 +1,8 @@
 # .NET MAUI Pages
 
+# Make changes in App.xaml.cs to show examples for different kinds of pages
+
+
 Watch Tutorial Video: https://www.youtube.com/watch?v=G_vktKfMU20
 
 This is video is part of a series named .NET MAUI Tutorial.

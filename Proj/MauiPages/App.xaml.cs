@@ -18,8 +18,8 @@ public partial class App : Application
         //navigationPage.BarTextColor = Colors.Black;
         //MainPage = navigationPage;
 
-        //MainPage = new DemoFlyoutPage();
+        MainPage = new DemoFlyoutPage();
 
-        MainPage = new DemoTabbedPage();
+        //MainPage = new DemoTabbedPage();
     }
 }
