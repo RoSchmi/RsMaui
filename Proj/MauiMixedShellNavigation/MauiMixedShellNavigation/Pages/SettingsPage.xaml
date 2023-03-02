@@ -11,16 +11,18 @@
     
     <ContentPage.Content>
         <Grid RowDefinitions="30*, 80*">
-        <VerticalStackLayout Grid.Row="0">
-            <Label Text="This is Settingspage" VerticalOptions="Center" HorizontalOptions="Center"/>
-                <Button Text="&lt; Goto Home" Command="{Binding GotoHomeCommand}" HorizontalOptions="Start"/>
+            <VerticalStackLayout Grid.Row="0">
                 <HorizontalStackLayout>
-                    <Button Text="Show Navigation State" Command="{Binding ShowNavigationStateCommand}"/>
-                    <Entry Text="{Binding NavigationState}" MinimumWidthRequest="400" BackgroundColor="Bisque"/>
+                <Button Text="&lt; Goto Home" Command="{Binding GotoHomeCommand}" HorizontalOptions="Start" Margin="0,0,0,5" MaximumHeightRequest="30"/>
+                    <Button Text="Show Navigation State" Command="{Binding ShowNavigationStateCommand}" Margin="20,0,0,5" HorizontalOptions="End" MaximumHeightRequest="30"/>
+                    </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="NavState: " Padding="5,0"  HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+                    <Entry Text="{Binding NavigationState}" Margin="0,0,0,5" MinimumWidthRequest="400" BackgroundColor="DarkGray"/>
                 </HorizontalStackLayout>
                 <HorizontalStackLayout>
-                    <Label Text="Injected Sender: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
-                    <Entry Text="{Binding Sender}" Margin="5,0,0,0"  MinimumWidthRequest="200" BackgroundColor="Bisque" IsReadOnly="True"/>
+                    <Label Text="Sender: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+                    <Entry Text="{Binding Sender}" Margin="18,0,0,5" MinimumWidthRequest="200" BackgroundColor="DarkGray" IsReadOnly="True"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         <ScrollView Grid.Row="1">

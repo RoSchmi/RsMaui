@@ -3,20 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiMixedShellNavigation.Pages.SettingsDetailPage"
              Title="SettingsDetailPage">
-    
+
     <VerticalStackLayout>
         <Label Text="This is SettingsDetailPage" VerticalOptions="Center" HorizontalOptions="Center" Padding="0,25"/>
-        <Button Text="Go Back" Command="{Binding GoBackCommand}" HorizontalOptions="Start"/>
         <HorizontalStackLayout>
-            <Button Text="Show Navigation State" Command="{Binding ShowNavigationStateCommand}"/>
-            <Entry Text="{Binding NavigationState}" MinimumWidthRequest="400" BackgroundColor="Bisque" IsReadOnly="True"/>
+            <Grid  ColumnDefinitions="150, Auto"  HorizontalOptions="FillAndExpand">
+                <Button Text="Go Back" Command="{Binding GoBackCommand}" Grid.Column="0" Margin="0,0,0,5" HorizontalOptions="Start"/>
+                <Button Text="Show Navigation State" Command="{Binding ShowNavigationStateCommand}" Grid.Column="1" Margin="20,0,0,5" HorizontalOptions="End"/>
+            </Grid>
         </HorizontalStackLayout>
         <HorizontalStackLayout>
-            <Label Text="Injected Sender: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
-            <Entry Text="{Binding InjectedSender}" Margin="5,0,0,0"  MinimumWidthRequest="200" BackgroundColor="Bisque" IsReadOnly="True"/>
-            <Label Text="Injected Name: " Padding="15,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
-            <Entry Text="{Binding InjectedName}" Margin="5,0,0,0" MinimumWidthRequest="200" BackgroundColor="Bisque" IsReadOnly="True"/>
+            <Label Text="NavState: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+            <Entry Text="{Binding NavigationState}" Margin="0,0,0,5" WidthRequest="250" BackgroundColor="DarkGray" IsReadOnly="True"/>
         </HorizontalStackLayout>
-        
+        <HorizontalStackLayout>
+            <Label Text="Sender: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+            <Entry Text="{Binding InjectedSender}" Margin="15,0,0,5"  WidthRequest="250" BackgroundColor="DarkGrey" IsReadOnly="True"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout>
+            <Label Text="Name: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+            <Entry Text="{Binding InjectedName}" Margin="23,0,0,0" WidthRequest="250" BackgroundColor="DarkGray" IsReadOnly="True"/>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

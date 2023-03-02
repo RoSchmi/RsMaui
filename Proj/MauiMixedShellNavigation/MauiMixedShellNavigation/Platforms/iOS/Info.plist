@@ -28,5 +28,15 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.roschmi.mauimixedshellnavigation</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
+	<key>MinimumOSVersion</key>
+	<string>14.3</string>
+	<key>SupportedOSPlatformVersion</key>
+	<string>14.3</string>
+        <key>DefaultSdkVersion</key>
+	<string>16.1</string>
 </dict>
 </plist>

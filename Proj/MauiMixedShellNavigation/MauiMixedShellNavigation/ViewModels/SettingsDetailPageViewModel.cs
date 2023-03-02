@@ -50,7 +50,7 @@ namespace MauiMixedShellNavigation.ViewModels
 
             
             //await Shell.Current.GoToAsync($"{nameof(SettingsDetailPage)}?Parameter={((SettingItems)s).Sender}", false, navigationParameter);
-            Shell.Current.GoToAsync($"{new string("..")}?Parameter ={nameof(SettingsDetailPage)}", false, navigationParameter);
+            Shell.Current.GoToAsync($"{new string("..")}?Parameter ={nameof(SettingsDetailPage)}", navigationParameter);
         }
 
         [RelayCommand]

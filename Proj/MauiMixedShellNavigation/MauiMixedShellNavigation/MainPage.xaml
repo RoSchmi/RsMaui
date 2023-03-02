@@ -19,13 +19,14 @@
             <Grid RowDefinitions="100, Auto, Auto">
                 <Grid Grid.Row="2" ColumnDefinitions="{Binding DisplayWidth}">
                     <VerticalStackLayout>
+                        <Button Text="Show Navigation State" Command="{Binding ShowNavigationStateCommand}" Margin="0,0,0,5" HorizontalOptions="Start" HeightRequest="40" />
                         <HorizontalStackLayout>
-                            <Button Text="Show Navigation State" Command="{Binding ShowNavigationStateCommand}"/>
-                            <Entry Text="{Binding NavigationState}" MinimumWidthRequest="400" BackgroundColor="Bisque"/>
+                            <Label Text="State: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+                            <Entry Text="{Binding NavigationState}" MinimumWidthRequest="250" Margin="15,0,0,5" BackgroundColor="DarkGray" MaximumHeightRequest="40"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout>
-                            <Label Text="Injected Sender: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
-                            <Entry Text="{Binding Sender}" Margin="5,0,0,0"  MinimumWidthRequest="200" BackgroundColor="Bisque" IsReadOnly="True"/>
+                            <Label Text="Sender: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Sender}" MinimumWidthRequest="250" BackgroundColor="DarkGray"  IsReadOnly="True"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout HorizontalOptions="Center" Spacing="10" Padding="2">
                             <Button Text="&lt;" Margin="0, 20, 0, 0" BackgroundColor="CornflowerBlue" MaximumHeightRequest="40" HorizontalOptions="FillAndExpand" Command="{Binding GoToSettingsCommand}" CommandParameter="MainPage"/>
