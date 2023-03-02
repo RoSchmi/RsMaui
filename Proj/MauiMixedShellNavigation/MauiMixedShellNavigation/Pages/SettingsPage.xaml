@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMixedShellNavigation.Pages.SettingsPage"
+             xmlns:local="clr-namespace:MauiMixedShellNavigation"
+             xmlns:models="clr-namespace:MauiMixedShellNavigation.Models"
+             xmlns:viewmodel="clr-namespace:MauiMixedShellNavigation.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="viewmodel:SettingsViewModel"
+             Title="SettingsPage">
+    
+    <ContentPage.Content>
+        <Grid RowDefinitions="30*, 80*">
+        <VerticalStackLayout Grid.Row="0">
+            <Label Text="This is Settingspage" VerticalOptions="Center" HorizontalOptions="Center"/>
+                <Button Text="&lt; Goto Home" Command="{Binding GotoHomeCommand}" HorizontalOptions="Start"/>
+                <HorizontalStackLayout>
+                    <Button Text="Show Navigation State" Command="{Binding ShowNavigationStateCommand}"/>
+                    <Entry Text="{Binding NavigationState}" MinimumWidthRequest="400" BackgroundColor="Bisque"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Injected Sender: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+                    <Entry Text="{Binding Sender}" Margin="5,0,0,0"  MinimumWidthRequest="200" BackgroundColor="Bisque" IsReadOnly="True"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        <ScrollView Grid.Row="1">
+                <VerticalStackLayout>
+                    <CollectionView x:Name="collectionView"
+                        x:FieldModifier="public"
+                        SelectionMode="Single"
+                        ItemsSource="{Binding Path = SettingsItems}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView  BackgroundColor="#0F0F0F">
+                                <Grid Padding="5,1">
+                                <Frame>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1"  
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:SettingsViewModel}}, 
+                                                                Path=TapCommand}"
+                                                                CommandParameter="{Binding .}" />
+                                                                <!-- To use a property of the ItemsSource, take the following form -->
+                                                                <!-- CommandParameter="{Binding Source={RelativeSource AncestorType={x:Type models:SettingsItem}}, Path=Title}" -->
+                                    </Frame.GestureRecognizers>
+                                        <HorizontalStackLayout>
+                                            <Label Text="{Binding Source={RelativeSource AncestorType={x:Type models:SettingItems}}, Path=Name}" VerticalOptions="Center" FontSize="24"/>
+                                            <Label Text="{Binding Source={RelativeSource AncestorType={x:Type models:SettingItems}}, Path=Instruction}" Margin="20,0,0,0" VerticalOptions="Center" FontSize="16"/>
+                                        </HorizontalStackLayout>
+                                </Frame>
+                                </Grid>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+        </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

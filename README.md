@@ -31,7 +31,10 @@ Change the App.xaml.cs to see the different solutions. For FlyoutPage better see
 
 ### FlyoutPageNavigation
 This is an adaption of the example from here: https://learn.microsoft.com/en-us/dotnet/maui/user-interface/pages/flyoutpage?view=net-maui-7.0
-It shows FlyoutPageNavigation which is not compatible with Shell-Naviagation
+It shows FlyoutPageNavigation which is not compatible with Shell-Navigation
+
+### MauiMixedShellNavigation
+Shows Navigation, Shell and Modal
 
  
 

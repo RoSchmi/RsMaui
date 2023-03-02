@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMixedShellNavigation.MainPage"
+             xmlns:local="clr-namespace:MauiMixedShellNavigation"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title = "Home">
+    
+    <ContentPage.BindingContext>
+        <local:MainPageViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:MultiMathExpressionConverter x:Key="MultiMathExpressionConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView Orientation= "Vertical" VerticalScrollBarVisibility="Always">
+            <Grid RowDefinitions="100, Auto, Auto">
+                <Grid Grid.Row="2" ColumnDefinitions="{Binding DisplayWidth}">
+                    <VerticalStackLayout>
+                        <HorizontalStackLayout>
+                            <Button Text="Show Navigation State" Command="{Binding ShowNavigationStateCommand}"/>
+                            <Entry Text="{Binding NavigationState}" MinimumWidthRequest="400" BackgroundColor="Bisque"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout>
+                            <Label Text="Injected Sender: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+                            <Entry Text="{Binding Sender}" Margin="5,0,0,0"  MinimumWidthRequest="200" BackgroundColor="Bisque" IsReadOnly="True"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="10" Padding="2">
+                            <Button Text="&lt;" Margin="0, 20, 0, 0" BackgroundColor="CornflowerBlue" MaximumHeightRequest="40" HorizontalOptions="FillAndExpand" Command="{Binding GoToSettingsCommand}" CommandParameter="MainPage"/>
+                            <Label Text="Go to SettingsPage" VerticalOptions="Center" FontSize="Large" FontAttributes="Bold"  Margin="10,20,0,0"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Grid>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMixedShellNavigation.Pages.SettingsDetailPage"
+             Title="SettingsDetailPage">
+    
+    <VerticalStackLayout>
+        <Label Text="This is SettingsDetailPage" VerticalOptions="Center" HorizontalOptions="Center" Padding="0,25"/>
+        <Button Text="Go Back" Command="{Binding GoBackCommand}" HorizontalOptions="Start"/>
+        <HorizontalStackLayout>
+            <Button Text="Show Navigation State" Command="{Binding ShowNavigationStateCommand}"/>
+            <Entry Text="{Binding NavigationState}" MinimumWidthRequest="400" BackgroundColor="Bisque" IsReadOnly="True"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout>
+            <Label Text="Injected Sender: " Padding="5,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+            <Entry Text="{Binding InjectedSender}" Margin="5,0,0,0"  MinimumWidthRequest="200" BackgroundColor="Bisque" IsReadOnly="True"/>
+            <Label Text="Injected Name: " Padding="15,0" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+            <Entry Text="{Binding InjectedName}" Margin="5,0,0,0" MinimumWidthRequest="200" BackgroundColor="Bisque" IsReadOnly="True"/>
+        </HorizontalStackLayout>
+        
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MauiMixedShellNavigation.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MauiMixedShellNavigation"
+    xmlns:view="clr-namespace:MauiMixedShellNavigation.Pages"
+    Shell.FlyoutBehavior="Flyout">
+
+
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+
+    <ShellContent
+            Title="Settings"
+            ContentTemplate="{DataTemplate view:SettingsPage}"
+            Route="SettingsPage"
+            FlyoutItemIsVisible="True"/>
+    <ShellContent
+            Title="SettingDetails"
+            ContentTemplate="{DataTemplate view:SettingsDetailPage}"
+            Route="SettingsDetailPage"
+            FlyoutItemIsVisible="False"/>
+    <ShellContent
+            Title="About"
+            ContentTemplate="{DataTemplate view:AboutPage}"
+            Route="AboutPage"
+            FlyoutItemIsVisible="True"/>
+    
+
+</Shell>
