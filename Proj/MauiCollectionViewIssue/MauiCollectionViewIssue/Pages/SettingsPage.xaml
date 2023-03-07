@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MauiCollectionViewIssue.Models"
+             xmlns:controls="clr-namespace:MauiCollectionViewIssue.Controls"
+             xmlns:views="clr-namespace:MauiCollectionViewIssue.Pages"
+             xmlns:templates="clr-namespace:DataTemplates"
+             x:Class="MauiCollectionViewIssue.Pages.SettingsPage"
+             Title="Settings">
+
+    <ContentPage.Resources>
+        <ControlTemplate x:Key="CardViewControlTemplate">
+            <Frame BindingContext="{Binding Source={RelativeSource TemplatedParent}}"
+                   BackgroundColor="{Binding CardColor}"
+                   BorderColor="{Binding BorderColor}"
+                   CornerRadius="5"
+                   HasShadow="True"
+                   Padding="8"
+                   HorizontalOptions="Center"
+                   WidthRequest="400"
+                   VerticalOptions="Center">
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="75" />
+                        <RowDefinition Height="4" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Text="{Binding CardTitle}"
+                           FontAttributes="Bold"
+                           FontSize="20"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start" />
+                    <BoxView Grid.Row="1"
+                             BackgroundColor="{Binding BorderColor}"
+                             HeightRequest="2"
+                             HorizontalOptions="Fill" />
+                    <Label Grid.Row="2"
+                           Text="{Binding CardDescription}"
+                           VerticalTextAlignment="Start"
+                           VerticalOptions="Fill"
+                           HorizontalOptions="Fill" />
+                    
+                </Grid>
+            </Frame>
+        </ControlTemplate>
+
+        <DataTemplate x:Key="gridTemplate">
+            <controls:CardView BorderColor="DarkGray"
+                                CardColor="LightGreen"
+                               CardTitle="{Binding Name}" 
+                               CardDescription="{Binding Location}"
+                               ControlTemplate="{StaticResource CardViewControlTemplate}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="swipeTemplate">
+            <SwipeView>
+                <!-- <Frame HeightRequest="70" Style="controls:CardView"> -->
+                    <Frame HeightRequest="70">
+                    <HorizontalStackLayout>
+                        <Label Text="SwipeTempl: "/>
+                        <Label Text="{Binding Source={RelativeSource AncestorType={x:Type models:Person}}, Path=Name}" />
+                        <Label Text="{Binding Source={RelativeSource AncestorType={x:Type models:Person}}, Path=Location}" Margin="10, 0, 0, 0"/>
+                    </HorizontalStackLayout>
+                </Frame>
+            </SwipeView>
+        </DataTemplate>
+
+        <templates:TemplateSelector x:Key="templateSelector"
+                                          GridTemplate="{StaticResource gridTemplate}"
+                                          SwipeTemplate="{StaticResource swipeTemplate}" 
+                                          />
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+    <VerticalStackLayout>
+        <Grid RowDefinitions="Auto, 400">
+                <HorizontalStackLayout Grid.Row="0">
+                    <Button Text="&lt; Go back to Home" Command="{Binding GoBackCommand}" HorizontalOptions="Start"/>
+                </HorizontalStackLayout>
+                <ScrollView Grid.Row="1">
+                    <VerticalStackLayout>
+                        <CollectionView ItemTemplate="{StaticResource templateSelector}">
+                            <!-- <CollectionView ItemTemplate="{StaticResource swipeTemplate}"> -->
+                            <CollectionView.ItemsSource>
+                            <x:Array Type="{x:Type models:Person}">
+                                <models:Person Name="Steve" Location="USA" />
+                                <models:Person Name="Jonas" Location="Germany" />
+                                <models:Person Name="Tom" Location="UK" />
+                                <models:Person Name="Lucas" Location="Germany" />
+                                <models:Person Name="Tariq" Location="UK" />
+                                <models:Person Name="Jane" Location="USA" />
+                            </x:Array>
+                        </CollectionView.ItemsSource>
+                    </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Grid>
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

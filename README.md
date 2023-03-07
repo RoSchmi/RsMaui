@@ -36,5 +36,8 @@ It shows FlyoutPageNavigation which is not compatible with Shell-Navigation
 ### MauiMixedShellNavigation
 Shows Navigation, Shell and Modal
 
+### MauiCollectionViewIssue
+Some exercises to work with templates for CollectionView
+
  
 
