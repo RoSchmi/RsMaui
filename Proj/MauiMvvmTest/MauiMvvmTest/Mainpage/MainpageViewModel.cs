@@ -27,7 +27,14 @@ namespace MauiMvvmTest
         private string itemText;
 
         [ObservableProperty] // source generator
+        [NotifyPropertyChangedFor(nameof(CounterWithMessage))]
         private string counterCopy = "0";
+
+        public string CounterWithMessage
+        {
+            get => $"This is the State of the Counter: {counterCopy}";
+            set => SetProperty(ref counterCopy, value);
+        }
 
 
         [RelayCommand]

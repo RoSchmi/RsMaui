@@ -11,9 +11,8 @@
              In 'MauiProgram.cs' References to MainPage and MainPageViewModel have to be added
     -->
     <ScrollView>
-    <Grid 
-        RowDefinitions= "300, Auto, 600">
-    <ScrollView Grid.Row="0">
+        <Grid 
+        RowDefinitions= "350, Auto, 600">
             <VerticalStackLayout        
             Spacing="2"
             Padding="10,10"
@@ -22,7 +21,8 @@
                 Source="dotnet_bot.png"
                 SemanticProperties.Description="Cute dot net bot waving hi to you!"
                 HeightRequest="100"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center" 
+                Grid.Row="0"/>
 
                 <Label
                 Text="Welcome to .NET Multi-platform App UI"
@@ -31,14 +31,14 @@
                 FontSize="14"
                 HorizontalOptions="Center" />
             <Label
-                Text="Shows MVVM-Pattern and Code-behind-Pattern"
+                Text="Shows MVVM-Pattern, Code-behind-Pattern, Control Reference Bindings and [NotifyPropertyChangedFor(..] Binding) "
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                 FontSize="14"
-                HorizontalOptions="Center" />
-            <HorizontalStackLayout >
+                HorizontalOptions="Center" Margin="0,0,0,10" />
+                <HorizontalStackLayout >
                 <Label  Text="Code-behind Pattern" MinimumWidthRequest="200" HorizontalTextAlignment="Start"/>
-                <Button
+                    <Button
                     x:Name="CounterBtn"
                     Text=" Click me "
                     Padding="10,10"
@@ -47,16 +47,21 @@
                     SemanticProperties.Hint="Counts the number of times you click"
                     Clicked="OnCounterClicked"
                     HorizontalOptions="End" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout >
+                    <Label Text="(Label below bound via [NotifyPropertyChangedFor)" Margin="15,0,0,0" VerticalOptions="End"/>
+                </HorizontalStackLayout>
+
+                    <HorizontalStackLayout >
                 <Label  Text="Command-Pattern" WidthRequest="200" HorizontalTextAlignment="Start"/>
-                <Button Text="{Binding CounterCopy}"  
+                    <Button x:Name="CountButton" IsEnabled="{Binding IsToggled, Source={x:Reference EnabledSwitch}}" Text="{Binding CounterCopy}"  
                     Command="{Binding  IncrementContentCommand}" 
                     WidthRequest="150"
                     Padding="10,10"
                     Margin="10,0,0,0" 
                     HorizontalOptions="End"/>
-            </HorizontalStackLayout>
+                    <Label Text="{Binding CounterWithMessage}" MinimumWidthRequest="250"  BackgroundColor="Bisque" VerticalOptions="Start" Margin="20,10,0,0"/>
+                    <Switch x:Name="EnabledSwitch" Margin="10,0,-60,0"/>
+                    <Label Text="(Switch bound to 'IsEnabled' of Button)" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
             <HorizontalStackLayout >
                     <Label  Text="Code-behind-Pattern" WidthRequest="200" HorizontalTextAlignment="Start"/>
                     <Button x:Name="ResetButton" 
@@ -70,7 +75,7 @@
 
 
             </VerticalStackLayout>
-</ScrollView>
+
         <ScrollView Grid.Row= "1">
             <VerticalStackLayout
                 Spacing="5"
