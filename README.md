@@ -39,5 +39,8 @@ Shows Navigation, Shell and Modal
 ### MauiCollectionViewIssue
 Some exercises to work with templates for CollectionView
 
+### MauiCollectionViewSelectedColor
+Shows how to change color of Controls in a CollectionView on selecting
+
  
 

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MauiCollectionViewSelectedColor"
+             x:Class="MauiCollectionViewSelectedColor.MainPage">
+
+    <ContentPage.Resources>
+        <Style TargetType="SwipeView">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" >
+                            <VisualState.Setters>
+                                <Setter TargetName="myboxview" Property="BoxView.Color" Value="DarkGray" />
+                                <Setter TargetName="myframe" Property="Frame.BorderColor" Value="DarkGray" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter TargetName="myboxview" Property="BoxView.Color" Value="Red" />
+                                <Setter TargetName="myframe" Property="Frame.BorderColor" Value="Red" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="500"/>
+            <RowDefinition Height="250"/>
+        </Grid.RowDefinitions>
+
+        <Grid ColumnDefinitions="33* ,33* ,33*" Grid.Row="0" HorizontalOptions="Center">
+            <VerticalStackLayout Padding="20">
+                <Button Grid.Column="1" Text="{Binding RetourValue}" MinimumWidthRequest="150" MaximumWidthRequest="250"/>
+            </VerticalStackLayout>
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="10,0">
+                <CollectionView x:Name="collectionView" SelectionMode="Single" ItemsSource="{Binding Path=ItemCollection}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView x:Name ="myswipeview" >
+                                <Frame HeightRequest="70"  x:Name="myframe" BackgroundColor="Transparent">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1"  
+                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainPageViewModel}}, 
+                                                               Path=TapCommand}"
+                                                               CommandParameter="{Binding .}" />
+                                    </Frame.GestureRecognizers>
+                                    <VerticalStackLayout>
+                                        <Grid ColumnDefinitions="60*, 35*, 5*">
+                                            <Label Text="{Binding Source={RelativeSource AncestorType={x:Type local:RowContent}}, Path=Name}" Grid.Column="0"  HorizontalOptions="Start" TextColor="DeepSkyBlue" FontAttributes="Bold"/>
+                                            <Label Text="Set Details  >" Grid.Column="1"  HorizontalOptions="End" TextColor="DarkGray" FontAttributes="Bold"/>
+                                        </Grid>
+                                        <HorizontalStackLayout>
+                                            <Label x:Name="mylabel" Text="Ich grüße dich:" HorizontalOptions="Start" TextColor="Gray"/>
+                                            <Label Text="{Binding Source={RelativeSource AncestorType={x:Type local:RowContent}}, Path=DisplayValue}" HorizontalOptions="Start" Margin="5, 0, 0, 0" FontAttributes="Bold"/>
+                                        </HorizontalStackLayout>
+                                        <BoxView x:Name="myboxview"  HeightRequest="3" HorizontalOptions="Fill" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
